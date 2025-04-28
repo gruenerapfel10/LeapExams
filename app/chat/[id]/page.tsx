@@ -7,8 +7,12 @@ import { DEFAULT_MODEL_NAME } from '@/lib/ai/models';
 import { getChatById, getMessagesByChatId } from '@/lib/db/queries';
 import { DataStreamHandler } from '@/components/data-stream-handler';
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
   const cookieStore = await cookies();
   const modelIdFromCookie = cookieStore.get('chat-model');
 
