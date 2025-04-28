@@ -30,7 +30,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/dashboard" onClick={() => setOpenMobile(false)}>
+                  <a href="/dashboard/overview" onClick={() => setOpenMobile(false)}>
                     <Home className="h-4 w-4" />
                     <span>Dashboard</span>
                   </a>

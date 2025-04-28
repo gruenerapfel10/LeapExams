@@ -33,7 +33,7 @@ export function LoginForm({
 
   useEffect(() => {
     if (state?.status === 'success') {
-      router.push('/dashboard');
+      router.push('/dashboard/overview');
       router.refresh();
     }
   }, [state?.status, router]);

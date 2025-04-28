@@ -44,7 +44,7 @@ export async function middleware(req: NextRequest) {
     // If user is signed in and trying to access a public route,
     // redirect to dashboard
     if (session && isPublicPath) {
-      return NextResponse.redirect(new URL('/dashboard', req.url));
+      return NextResponse.redirect(new URL('/dashboard/overview', req.url));
     }
 
     return res;
