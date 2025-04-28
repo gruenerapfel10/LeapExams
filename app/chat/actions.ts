@@ -7,9 +7,12 @@ import {
   deleteMessagesByChatIdAfterTimestamp,
   getMessageById,
   updateChatVisiblityById,
+  getChatById,
+  getMessagesByChatId,
 } from '@/lib/db/queries';
 import { VisibilityType } from '@/components/visibility-selector';
 import { myProvider } from '@/lib/ai/models';
+import { UIMessage } from 'ai';
 
 export async function saveChatModelAsCookie(model: string) {
   const cookieStore = await cookies();
@@ -19,19 +22,18 @@ export async function saveChatModelAsCookie(model: string) {
 export async function generateTitleFromUserMessage({
   message,
 }: {
-  message: Message;
+  message: UIMessage;
 }) {
-  const { text: title } = await generateText({
-    model: myProvider.languageModel('flash'),
-    system: `\n
-    - you will generate a short title based on the first message a user begins a conversation with
-    - ensure it is not more than 80 characters long
-    - the title should be a summary of the user's message
-    - do not use quotes or colons`,
-    prompt: JSON.stringify(message),
-  });
+  if (!message) {
+    return 'New Chat';
+  }
 
-  return title;
+  // Get the text content from the message
+  const textPart = message.parts?.find(part => 'text' in part);
+  const content = textPart?.text || '';
+
+  // Truncate the content to a reasonable length for a title
+  return content.length > 50 ? content.slice(0, 50) + '...' : content;
 }
 
 export async function deleteTrailingMessages({ id }: { id: string }) {

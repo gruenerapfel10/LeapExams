@@ -5,7 +5,7 @@ import {
   smoothStream,
   streamText,
 } from 'ai';
-import { auth } from '@/app/auth/auth';
+import { auth } from '@/lib/auth/auth';
 import { systemPrompt } from '@/lib/ai/prompts';
 import {
   deleteChatById,
@@ -18,7 +18,7 @@ import {
   getMostRecentUserMessage,
   getTrailingMessageId,
 } from '@/lib/utils';
-import { generateTitleFromUserMessage } from '../../actions';
+import { generateTitleFromUserMessage } from '@/app/chat/actions';
 import { createDocument } from '@/lib/ai/tools/create-document';
 import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
@@ -102,6 +102,10 @@ export async function POST(request: Request) {
 
     return createDataStreamResponse({
       execute: (dataStream) => {
+        console.log('Chat API Debug - Model Selection:', {
+          selectedChatModel,
+        });
+        
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
           system: systemPrompt({ selectedChatModel }),
@@ -175,8 +179,9 @@ export async function POST(request: Request) {
           sendReasoning: true,
         });
       },
-      onError: () => {
-        return 'Oops, an error occurred!';
+      onError: (error) => {
+        console.error('Chat Generation Error:', error);
+        return `An error occurred during chat generation: ${error instanceof Error ? error.message : 'Unknown error'}`;
       },
     });
   } catch (error) {

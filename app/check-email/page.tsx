@@ -60,7 +60,7 @@ export default function CheckEmailPage() {
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Check your email</h1>
                 <p className="text-balance text-sm text-muted-foreground">
-                  We've sent a confirmation email to <strong>{email || 'your email address'}</strong>.
+                  We&apos;ve sent a confirmation email to <strong>{email || 'your email address'}</strong>.
                   Please check your inbox and click the link to verify your account.
                 </p>
               </div>
@@ -87,7 +87,7 @@ export default function CheckEmailPage() {
               
               <div className="flex flex-col gap-2 text-center text-sm">
                 <p className="text-muted-foreground">
-                  Didn't receive the email? Check your spam folder.
+                  Didn&apos;t receive the email? Check your spam folder.
                 </p>
                 <p className="text-muted-foreground">
                   Already confirmed? <Link href="/login" className="text-primary underline underline-offset-4">Sign in</Link>
