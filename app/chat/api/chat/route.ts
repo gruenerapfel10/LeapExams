@@ -5,7 +5,7 @@ import {
   smoothStream,
   streamText,
 } from 'ai';
-import { auth } from '@/app/(auth)/auth';
+import { auth } from '@/app/auth/auth';
 import { systemPrompt } from '@/lib/ai/prompts';
 import {
   deleteChatById,
