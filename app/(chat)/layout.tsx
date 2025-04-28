@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import Script from 'next/script';
-import { auth } from '@/app/auth/auth';
+import { auth } from '@/app/(auth)/auth';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
