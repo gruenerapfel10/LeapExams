@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 export async function auth() {
   const supabase = createClient();
@@ -36,4 +37,31 @@ export async function signOut() {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
+}
+
+export async function GET(request: Request) {
+  const supabase = createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (!session) {
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+  }
+  
+  return NextResponse.json({ session });
+}
+
+export async function POST(request: Request) {
+  const supabase = createClient();
+  const { email, password } = await request.json();
+  
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 401 });
+  }
+  
+  return NextResponse.json({ session: data.session });
 }

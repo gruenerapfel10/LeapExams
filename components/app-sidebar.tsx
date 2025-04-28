@@ -29,11 +29,6 @@ import {
 
 // This is sample data.
 const data = {
-  user: {
-    name: "Student",
-    email: "student@example.com",
-    avatar: "/avatars/default.jpg",
-  },
   teams: [
     {
       name: "IELTS",
@@ -176,7 +171,25 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  user?: {
+    id: string;
+    email?: string;
+    name?: string;
+  };
+}
+
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
+  const userData = user ? {
+    name: user.name || user.email || 'User',
+    email: user.email || '',
+    avatar: "/avatars/default.jpg",
+  } : {
+    name: "Guest",
+    email: "",
+    avatar: "/avatars/default.jpg",
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -188,7 +201,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center justify-between px-4 py-2">
-          <NavUser user={data.user} />
+          <NavUser user={userData} />
           <ThemeToggle />
         </div>
       </SidebarFooter>

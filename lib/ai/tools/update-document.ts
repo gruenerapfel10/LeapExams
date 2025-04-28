@@ -1,11 +1,11 @@
 import { DataStreamWriter, tool } from 'ai';
-import { Session } from 'next-auth';
 import { z } from 'zod';
 import { getDocumentById, saveDocument } from '@/lib/db/queries';
 import { documentHandlersByArtifactKind } from '@/lib/artifacts/server';
+import { BaseSession } from '@/lib/types/session';
 
 interface UpdateDocumentProps {
-  session: Session;
+  session: BaseSession;
   dataStream: DataStreamWriter;
 }
 
