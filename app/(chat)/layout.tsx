@@ -4,8 +4,6 @@ import { auth } from '@/app/(auth)/auth';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
-export const experimental_ppr = true;
-
 export default async function Layout({
   children,
 }: {
