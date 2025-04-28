@@ -2,6 +2,9 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// List of public paths that don't require authentication
+const PUBLIC_PATHS = ['/login', '/signup', '/check-email'];
+
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   const supabase = createServerClient(
@@ -27,15 +30,20 @@ export async function middleware(req: NextRequest) {
       data: { session },
     } = await supabase.auth.getSession();
 
-    // If user is not signed in and the current path is not /login or /register,
-    // redirect the user to /login
-    if (!session && !req.nextUrl.pathname.startsWith('/login') && !req.nextUrl.pathname.startsWith('/register')) {
+    // Check if the path is in our public paths list
+    const isPublicPath = PUBLIC_PATHS.some(path => 
+      req.nextUrl.pathname.startsWith(path)
+    );
+
+    // If user is not signed in and trying to access a protected route,
+    // redirect to login
+    if (!session && !isPublicPath) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    // If user is signed in and the current path is /login or /register,
-    // redirect the user to /dashboard
-    if (session && (req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/register'))) {
+    // If user is signed in and trying to access a public route,
+    // redirect to dashboard
+    if (session && isPublicPath) {
       return NextResponse.redirect(new URL('/dashboard', req.url));
     }
 
