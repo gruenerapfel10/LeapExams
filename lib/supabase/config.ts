@@ -6,8 +6,8 @@
  */
 
 // Raw credentials for Supabase
-export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://your-project-url.supabase.co';
-export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'your-anon-key';
+export const SUPABASE_URL = process.env.SUPABASE_URL || 'https://your-project-url.supabase.co';
+export const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'your-anon-key';
 
 // Auth configuration
 export const AUTH_REDIRECT_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'; 
