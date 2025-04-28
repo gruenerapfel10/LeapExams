@@ -1,67 +1,199 @@
-'use client';
+"use client"
 
-import type { User } from 'next-auth';
-import { useRouter } from 'next/navigation';
+import * as React from "react"
+import {
+  BookOpen,
+  Headphones,
+  PenTool,
+  Mic,
+  Settings2,
+  LayoutDashboard,
+  GraduationCap,
+  FileText,
+  Languages,
+  Trophy,
+} from "lucide-react"
 
-import { PlusIcon } from '@/components/icons';
-import { SidebarHistory } from '@/components/sidebar-history';
-import { SidebarUserNav } from '@/components/sidebar-user-nav';
-import { Button } from '@/components/ui/button';
+import { NavMain } from "@/components/nav-main"
+import { NavProjects } from "@/components/nav-projects"
+import { NavUser } from "@/components/nav-user"
+import { TeamSwitcher } from "@/components/team-switcher"
+import { ThemeToggle } from "@/components/theme-toggle"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  useSidebar,
-} from '@/components/ui/sidebar';
-import Link from 'next/link';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+  SidebarRail,
+} from "@/components/ui/sidebar"
 
-export function AppSidebar({ user }: { user: User | undefined }) {
-  const router = useRouter();
-  const { setOpenMobile } = useSidebar();
+// This is sample data.
+const data = {
+  user: {
+    name: "Student",
+    email: "student@example.com",
+    avatar: "/avatars/default.jpg",
+  },
+  teams: [
+    {
+      name: "IELTS",
+      logo: Languages,
+      plan: "Premium",
+    },
+    {
+      name: "Goethe",
+      logo: Languages,
+      plan: "Premium",
+    },
+  ],
+  navMain: [
+    {
+      title: "Overview",
+      url: "/dashboard",
+      icon: LayoutDashboard,
+      isActive: true,
+    },
+    {
+      title: "IELTS Training",
+      url: "/dashboard/ielts",
+      icon: GraduationCap,
+      items: [
+        {
+          title: "Reading",
+          url: "/dashboard/ielts/reading",
+        },
+        {
+          title: "Listening",
+          url: "/dashboard/ielts/listening",
+        },
+        {
+          title: "Writing",
+          url: "/dashboard/ielts/writing",
+        },
+        {
+          title: "Speaking",
+          url: "/dashboard/ielts/speaking",
+        },
+      ],
+    },
+    {
+      title: "Goethe Training",
+      url: "/dashboard/goethe",
+      icon: GraduationCap,
+      items: [
+        {
+          title: "Reading",
+          url: "/dashboard/goethe/reading",
+        },
+        {
+          title: "Listening",
+          url: "/dashboard/goethe/listening",
+        },
+        {
+          title: "Writing",
+          url: "/dashboard/goethe/writing",
+        },
+        {
+          title: "Speaking",
+          url: "/dashboard/goethe/speaking",
+        },
+      ],
+    },
+    {
+      title: "Mock Exams",
+      url: "/dashboard/mock-exams",
+      icon: FileText,
+      items: [
+        {
+          title: "IELTS Mock Tests",
+          url: "/dashboard/mock-exams/ielts",
+        },
+        {
+          title: "Goethe Mock Tests",
+          url: "/dashboard/mock-exams/goethe",
+        },
+        {
+          title: "Previous Attempts",
+          url: "/dashboard/mock-exams/history",
+        },
+      ],
+    },
+    {
+      title: "Progress",
+      url: "/dashboard/progress",
+      icon: Trophy,
+      items: [
+        {
+          title: "Performance Analytics",
+          url: "/dashboard/progress/analytics",
+        },
+        {
+          title: "Study History",
+          url: "/dashboard/progress/history",
+        },
+        {
+          title: "Achievements",
+          url: "/dashboard/progress/achievements",
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      url: "/dashboard/settings",
+      icon: Settings2,
+      items: [
+        {
+          title: "Profile",
+          url: "/dashboard/settings/profile",
+        },
+        {
+          title: "Preferences",
+          url: "/dashboard/settings/preferences",
+        },
+        {
+          title: "Notifications",
+          url: "/dashboard/settings/notifications",
+        },
+      ],
+    },
+  ],
+  projects: [
+    {
+      name: "Recent IELTS Tests",
+      url: "/dashboard/ielts/recent",
+      icon: FileText,
+    },
+    {
+      name: "Recent Goethe Tests",
+      url: "/dashboard/goethe/recent",
+      icon: FileText,
+    },
+    {
+      name: "Study Materials",
+      url: "/dashboard/materials",
+      icon: BookOpen,
+    },
+  ],
+}
 
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar className="group-data-[side=left]:border-r-0">
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <div className="flex flex-row justify-between items-center">
-            <Link
-              href="/"
-              onClick={() => {
-                setOpenMobile(false);
-              }}
-              className="flex flex-row gap-3 items-center"
-            >
-              <span className="text-lg font-semibold px-2 hover:bg-muted rounded-md cursor-pointer">
-                Chatbot
-              </span>
-            </Link>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  type="button"
-                  className="p-2 h-fit"
-                  onClick={() => {
-                    setOpenMobile(false);
-                    router.push('/');
-                    router.refresh();
-                  }}
-                >
-                  <PlusIcon />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent align="end">New Chat</TooltipContent>
-            </Tooltip>
-          </div>
-        </SidebarMenu>
+        <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarHistory user={user} />
+        <NavMain items={data.navMain} />
+        <NavProjects projects={data.projects} />
       </SidebarContent>
-      <SidebarFooter>{user && <SidebarUserNav user={user} />}</SidebarFooter>
+      <SidebarFooter>
+        <div className="flex items-center justify-between px-4 py-2">
+          <NavUser user={data.user} />
+          <ThemeToggle />
+        </div>
+      </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
-  );
+  )
 }
+

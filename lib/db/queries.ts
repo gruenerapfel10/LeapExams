@@ -15,9 +15,7 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
 import {
-  authUser,
   chat,
-  type AuthUser,
   document,
   type Suggestion,
   suggestion,
@@ -48,7 +46,6 @@ export async function saveChat({
       userId,
       title,
       createdAt: new Date(),
-      updatedAt: new Date(),
     });
   } catch (error) {
     console.error('DB Debug - Error saving chat:', error);

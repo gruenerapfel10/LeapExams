@@ -131,7 +131,6 @@ export const suggestion = pgTable(
     documentRef: foreignKey({
       columns: [table.documentId, table.documentCreatedAt],
       foreignColumns: [document.id, document.createdAt],
-      onDelete: 'cascade',
     }),
   }),
 );
