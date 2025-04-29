@@ -1,0 +1,49 @@
+{
+    "common": {
+      "languageName": "English",
+      "changeLanguage": "Change language",
+      "more": "More"
+    },
+    "sidebar": {
+      "title": "Dashboard",
+      "overview": "Overview",
+      "studyMaterials": "Study Materials",
+      "readingPractice": "Reading Practice",
+      "listeningPractice": "Listening Practice",
+      "writingPractice": "Writing Practice",
+      "speakingPractice": "Speaking Practice",
+      "settings": "Settings",
+      "viewProject": "View Project",
+      "shareProject": "Share Project",
+      "deleteProject": "Delete Project",
+      "platform": "Platform",
+      "study": "Study"
+    },
+    "reading": {
+      "title": "Reading Practice",
+      "timer": "Time Left",
+      "question": "Question",
+      "of": "of",
+      "finish": "Finish",
+      "next": "Next",
+      "previous": "Previous",
+      "tryAgain": "Try Again",
+      "results": "Results",
+      "score": "Your score: {score} out of {total}",
+      "loading": "Loading reading passage...",
+      "error": "Error: {message}",
+      "failedToLoad": "Failed to load reading passage. Please try again."
+    },
+    "languages": {
+      "english": "English",
+      "german": "German",
+      "french": "French"
+    },
+    "exams": {
+      "ieltsTitle": "IELTS",
+      "ieltsDescription": "International English Language Testing System",
+      "goetheTitle": "Goethe",
+      "goetheDescription": "German language exam from the Goethe-Institut",
+      "targetLanguage": "Target Language"
+    }
+  }

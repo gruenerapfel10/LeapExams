@@ -38,8 +38,14 @@ import {
     }
   };
   
+  // Ensure the Google API key is available
+  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    console.warn('GOOGLE_GENERATIVE_AI_API_KEY is not set in environment variables');
+  }
+  
   export const myProvider = customProvider({
     languageModels: {
+        'gpt-4o-mini': customModel('openai.gpt-4o-mini'),
         flash: customModel('gemini.gemini-2.0-flash-exp'),
       haiku: customModel('anthropic.claude-3-haiku-20240307-v1:0'),
       'general-bedrock-agent': customModel('anthropic.claude-3-sonnet-20240229-v1:0'),

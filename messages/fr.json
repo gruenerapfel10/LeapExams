@@ -1,0 +1,49 @@
+{
+  "common": {
+    "languageName": "Français",
+    "changeLanguage": "Changer de langue",
+    "more": "Plus"
+  },
+  "sidebar": {
+    "title": "Tableau de bord",
+    "overview": "Aperçu",
+    "studyMaterials": "Matériel d'étude",
+    "readingPractice": "Exercice de lecture",
+    "listeningPractice": "Exercice d'écoute",
+    "writingPractice": "Exercice d'écriture",
+    "speakingPractice": "Exercice d'expression orale",
+    "settings": "Paramètres",
+    "viewProject": "Voir le projet",
+    "shareProject": "Partager le projet",
+    "deleteProject": "Supprimer le projet",
+    "platform": "Plateforme",
+    "study": "Étude"
+  },
+  "reading": {
+    "title": "Exercice de lecture",
+    "timer": "Temps restant",
+    "question": "Question",
+    "of": "sur",
+    "finish": "Terminer",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "tryAgain": "Réessayer",
+    "results": "Résultats",
+    "score": "Votre score: {score} sur {total}",
+    "loading": "Chargement du texte de lecture...",
+    "error": "Erreur: {message}",
+    "failedToLoad": "Échec du chargement du texte de lecture. Veuillez réessayer."
+  },
+  "languages": {
+    "english": "Anglais",
+    "german": "Allemand",
+    "french": "Français"
+  },
+  "exams": {
+    "ieltsTitle": "IELTS",
+    "ieltsDescription": "Système d'évaluation de langue anglaise internationale",
+    "goetheTitle": "Goethe",
+    "goetheDescription": "Examen de langue allemande de l'Institut Goethe",
+    "targetLanguage": "Langue cible"
+  }
+} 

@@ -19,6 +19,8 @@ import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useExam } from "@/lib/context/exam-context"
+import { EXAM_LANGUAGES } from "@/lib/constants"
 import {
   Sidebar,
   SidebarContent,
@@ -26,73 +28,17 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { LanguageSwitcher } from "@/components/language-switcher"
+import { useTranslation } from "@/lib/i18n/hooks"
 
 // This is sample data.
 const data = {
-  teams: [
-    {
-      name: "IELTS",
-      logo: Languages,
-      plan: "Premium",
-    },
-    {
-      name: "Goethe",
-      logo: Languages,
-      plan: "Premium",
-    },
-  ],
   navMain: [
     {
       title: "Overview",
       url: "/dashboard/overview",
       icon: LayoutDashboard,
       isActive: true,
-    },
-    {
-      title: "IELTS Training",
-      url: "/dashboard/ielts",
-      icon: GraduationCap,
-      items: [
-        {
-          title: "Reading",
-          url: "/dashboard/ielts/reading",
-        },
-        {
-          title: "Listening",
-          url: "/dashboard/ielts/listening",
-        },
-        {
-          title: "Writing",
-          url: "/dashboard/ielts/writing",
-        },
-        {
-          title: "Speaking",
-          url: "/dashboard/ielts/speaking",
-        },
-      ],
-    },
-    {
-      title: "Goethe Training",
-      url: "/dashboard/goethe",
-      icon: GraduationCap,
-      items: [
-        {
-          title: "Reading",
-          url: "/dashboard/goethe/reading",
-        },
-        {
-          title: "Listening",
-          url: "/dashboard/goethe/listening",
-        },
-        {
-          title: "Writing",
-          url: "/dashboard/goethe/writing",
-        },
-        {
-          title: "Speaking",
-          url: "/dashboard/goethe/speaking",
-        },
-      ],
     },
     {
       title: "Mock Exams",
@@ -154,17 +100,32 @@ const data = {
   ],
   projects: [
     {
-      name: "Recent IELTS Tests",
-      url: "/dashboard/ielts/recent",
-      icon: FileText,
+      name: "Reading Practice",
+      translationKey: "sidebar.readingPractice",
+      url: "/dashboard/reading",
+      icon: BookOpen,
     },
     {
-      name: "Recent Goethe Tests",
-      url: "/dashboard/goethe/recent",
-      icon: FileText,
+      name: "Listening Practice",
+      translationKey: "sidebar.listeningPractice",
+      url: "/dashboard/listening",
+      icon: Headphones,
+    },
+    {
+      name: "Writing Practice",
+      translationKey: "sidebar.writingPractice",
+      url: "/dashboard/writing",
+      icon: PenTool,
+    },
+    {
+      name: "Speaking Practice",
+      translationKey: "sidebar.speakingPractice",
+      url: "/dashboard/speaking",
+      icon: Mic,
     },
     {
       name: "Study Materials",
+      translationKey: "sidebar.studyMaterials",
       url: "/dashboard/materials",
       icon: BookOpen,
     },
@@ -180,6 +141,10 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
+  const { examType } = useExam();
+  const { t, isLoaded: isTranslationLoaded } = useTranslation();
+  const currentLanguage = EXAM_LANGUAGES[examType];
+
   const userData = user ? {
     name: user.name || user.email || 'User',
     email: user.email || '',
@@ -190,14 +155,49 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
     avatar: "/avatars/default.jpg",
   };
 
+  // Don't render translated content until translations are loaded
+  if (!isTranslationLoaded) {
+    return (
+      <Sidebar collapsible="icon" {...props}>
+        <SidebarHeader>
+          <TeamSwitcher />
+          <div className="px-4 py-2">
+            <LanguageSwitcher />
+          </div>
+          <div className="px-4 py-2 text-sm text-muted-foreground">
+            Loading...
+          </div>
+        </SidebarHeader>
+        <SidebarContent>
+          {/* Loading state */}
+        </SidebarContent>
+        <SidebarFooter>
+          <div className="flex items-center justify-between px-4 py-2">
+            <NavUser user={userData} />
+            <ThemeToggle />
+          </div>
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
+    );
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher />
+        <div className="px-4 py-2">
+          <LanguageSwitcher />
+        </div>
+        <div className="px-4 py-2 text-sm text-muted-foreground">
+          {t('exams.targetLanguage')}: {currentLanguage.flag} {currentLanguage.name}
+        </div>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavProjects projects={data.projects.map(project => ({
+          ...project,
+          name: t(project.translationKey),
+        }))} />
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center justify-between px-4 py-2">

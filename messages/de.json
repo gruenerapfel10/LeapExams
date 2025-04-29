@@ -1,0 +1,49 @@
+{
+    "common": {
+      "languageName": "Deutsch",
+      "changeLanguage": "Sprache ändern",
+      "more": "Mehr"
+    },
+    "sidebar": {
+      "title": "Dashboard",
+      "overview": "Übersicht",
+      "studyMaterials": "Lernmaterialien",
+      "readingPractice": "Leseübung",
+      "listeningPractice": "Hörübung",
+      "writingPractice": "Schreibübung",
+      "speakingPractice": "Sprechübung",
+      "settings": "Einstellungen",
+      "viewProject": "Projekt anzeigen",
+      "shareProject": "Projekt teilen",
+      "deleteProject": "Projekt löschen",
+      "platform": "Plattform",
+      "study": "Studium"
+    },
+    "reading": {
+      "title": "Leseübung",
+      "timer": "Verbleibende Zeit",
+      "question": "Frage",
+      "of": "von",
+      "finish": "Fertigstellen",
+      "next": "Weiter",
+      "previous": "Zurück",
+      "tryAgain": "Erneut versuchen",
+      "results": "Ergebnisse",
+      "score": "Ihre Punktzahl: {score} von {total}",
+      "loading": "Leseabschnitt wird geladen...",
+      "error": "Fehler: {message}",
+      "failedToLoad": "Leseabschnitt konnte nicht geladen werden. Bitte versuchen Sie es erneut."
+    },
+    "languages": {
+      "english": "Englisch",
+      "german": "Deutsch",
+      "french": "Französisch"
+    },
+    "exams": {
+      "ieltsTitle": "IELTS",
+      "ieltsDescription": "Internationales Englisch-Sprachtestsystem",
+      "goetheTitle": "Goethe",
+      "goetheDescription": "Deutschprüfung des Goethe-Instituts",
+      "targetLanguage": "Zielsprache"
+    }
+  }
