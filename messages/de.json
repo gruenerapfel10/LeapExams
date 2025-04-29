@@ -32,7 +32,12 @@
       "score": "Ihre Punktzahl: {score} von {total}",
       "loading": "Leseabschnitt wird geladen...",
       "error": "Fehler: {message}",
-      "failedToLoad": "Leseabschnitt konnte nicht geladen werden. Bitte versuchen Sie es erneut."
+      "failedToLoad": "Leseabschnitt konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
+      "generatingTitle": "Text wird generiert...",
+      "generatingContent": "Textinhalt wird generiert...",
+      "generatingQuestions": "Fragen werden generiert",
+      "waitingForPassage": "Bitte warten Sie, während der Text generiert wird",
+      "readPassageFirst": "Bitte lesen Sie zuerst den Text"
     },
     "languages": {
       "english": "Englisch",

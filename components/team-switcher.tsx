@@ -16,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useExam } from "@/lib/context/exam-context"
+import { useExam } from "@/lib/context/user-preferences-context"
 import { EXAM_TYPES, EXAM_LANGUAGES } from "@/lib/constants"
 
 export function TeamSwitcher() {

@@ -1,4 +1,4 @@
-import { generateObject } from 'ai'
+import { streamObject } from 'ai'
 import { z } from 'zod'
 import { myProvider } from './models'
 import { EXAM_LANGUAGES, ExamType, EXAM_TYPES } from '../constants'
@@ -28,16 +28,16 @@ function validateExamType(examType: ExamType): ExamType {
   return examType;
 }
 
-export async function generateReadingPassage(examType: ExamType) {
+export function streamReadingPassage(examType: ExamType) {
   // Validate exam type to prevent issues
   examType = validateExamType(examType);
   
   const model = myProvider.languageModel('gpt-4o-mini')
   const language = EXAM_LANGUAGES[examType]
   
-  console.log(`Generating reading passage in ${language.name} for ${examType}`);
+  console.log(`Streaming reading passage in ${language.name} for ${examType}`);
   
-  const { object: passageData } = await generateObject({
+  return streamObject({
     model,
     schema: passageSchema,
     prompt: `Generate a reading passage for ${examType.toUpperCase()} reading practice with the following requirements:
@@ -51,20 +51,18 @@ export async function generateReadingPassage(examType: ExamType) {
     - Do not include markdown formatting or special characters
     - The passage should be culturally appropriate for ${language.name} speakers`
   })
-
-  return passageData
 }
 
-export async function generateQuestions(passage: string, examType: ExamType) {
+export function streamQuestions(passage: string, examType: ExamType) {
   // Validate exam type to prevent issues
   examType = validateExamType(examType);
   
   const model = myProvider.languageModel('gpt-4o-mini')
   const language = EXAM_LANGUAGES[examType]
   
-  console.log(`Generating questions in ${language.name} for ${examType}`);
+  console.log(`Streaming questions in ${language.name} for ${examType}`);
   
-  const { object } = await generateObject({
+  return streamObject({
     model,
     schema: questionsSchema,
     prompt: `Based on the following passage, generate 3 multiple-choice questions in ${language.name}. Each question must have exactly 4 options and one correct answer (0-3).
@@ -81,6 +79,15 @@ export async function generateQuestions(passage: string, examType: ExamType) {
     - Options should be plausible but only one should be correct
     - Questions should be culturally appropriate for ${language.name} speakers`
   })
+}
 
-  return object
+// Keep the original functions for compatibility
+export async function generateReadingPassage(examType: ExamType) {
+  const { object } = await streamReadingPassage(examType);
+  return object;
+}
+
+export async function generateQuestions(passage: string, examType: ExamType) {
+  const { object } = await streamQuestions(passage, examType);
+  return object;
 } 

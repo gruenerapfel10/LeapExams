@@ -32,7 +32,12 @@
     "score": "Votre score: {score} sur {total}",
     "loading": "Chargement du texte de lecture...",
     "error": "Erreur: {message}",
-    "failedToLoad": "Échec du chargement du texte de lecture. Veuillez réessayer."
+    "failedToLoad": "Échec du chargement du texte de lecture. Veuillez réessayer.",
+    "generatingTitle": "Génération du texte...",
+    "generatingContent": "Génération du contenu...",
+    "generatingQuestions": "Génération des questions",
+    "waitingForPassage": "Veuillez patienter pendant la génération du texte",
+    "readPassageFirst": "Veuillez d'abord lire le texte"
   },
   "languages": {
     "english": "Anglais",

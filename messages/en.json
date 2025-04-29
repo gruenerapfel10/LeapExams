@@ -29,10 +29,15 @@
       "previous": "Previous",
       "tryAgain": "Try Again",
       "results": "Results",
-      "score": "Your score: {score} out of {total}",
+      "score": "Your score",
       "loading": "Loading reading passage...",
       "error": "Error: {message}",
-      "failedToLoad": "Failed to load reading passage. Please try again."
+      "failedToLoad": "Failed to load reading passage. Please try again.",
+      "generatingTitle": "Generating passage...",
+      "generatingContent": "Generating passage content...",
+      "generatingQuestions": "Generating questions",
+      "waitingForPassage": "Please wait while the passage is being generated",
+      "readPassageFirst": "Please read the passage first"
     },
     "languages": {
       "english": "English",

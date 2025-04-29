@@ -19,7 +19,7 @@ import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { useExam } from "@/lib/context/exam-context"
+import { useExam } from "@/lib/context/user-preferences-context"
 import { EXAM_LANGUAGES } from "@/lib/constants"
 import {
   Sidebar,
@@ -36,7 +36,7 @@ const platformItems = [
   {
     name: "Platform",
     translationKey: "sidebar.platform",
-    url: "/dashboard/platform",
+    url: "/dashboard/overview",
     icon: LayoutDashboard,
   },
   {

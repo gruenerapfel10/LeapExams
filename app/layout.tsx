@@ -2,7 +2,7 @@ import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import { ExamProvider } from '@/lib/context/exam-context';
+import { UserPreferencesProvider } from '@/lib/context/user-preferences-context';
 import { LanguageProvider } from '@/lib/context/language-context';
 
 import './globals.css';
@@ -79,10 +79,10 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <LanguageProvider>
-            <ExamProvider>
+            <UserPreferencesProvider>
               <Toaster position="top-center" />
               {children}
-            </ExamProvider>
+            </UserPreferencesProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>

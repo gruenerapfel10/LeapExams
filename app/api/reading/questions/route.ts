@@ -1,11 +1,18 @@
 import { NextResponse } from 'next/server'
-import { streamReadingPassage } from '@/lib/ai/reading'
+import { streamQuestions } from '@/lib/ai/reading'
 import { DEFAULT_EXAM, EXAM_TYPES } from '@/lib/constants'
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    let { examType = DEFAULT_EXAM } = body
+    let { examType = DEFAULT_EXAM, passage } = body
+
+    if (!passage) {
+      return NextResponse.json(
+        { error: 'Passage is required' },
+        { status: 400 }
+      )
+    }
 
     // Validate exam type
     if (!Object.values(EXAM_TYPES).includes(examType)) {
@@ -14,10 +21,10 @@ export async function POST(request: Request) {
     }
     
     // Log for debugging
-    console.log(`Streaming reading passage for exam type: ${examType}`)
+    console.log(`Streaming questions for exam type: ${examType}`)
     
     // Get streaming object
-    const { partialObjectStream, object } = streamReadingPassage(examType)
+    const { partialObjectStream, object } = streamQuestions(passage, examType)
     
     // Create a stream transformer
     const stream = new TransformStream()
@@ -27,22 +34,21 @@ export async function POST(request: Request) {
     ;(async () => {
       try {
         for await (const partial of partialObjectStream) {
-          const data = JSON.stringify({ passage: partial, type: 'partial' })
+          const data = JSON.stringify({ questions: partial, type: 'partial' })
           await writer.write(new TextEncoder().encode(`data: ${data}\n\n`))
         }
         
         // Send the complete object at the end
         const completeObject = await object
         const completeData = JSON.stringify({ 
-          passage: completeObject, 
-          type: 'complete',
-          examType 
+          questions: completeObject, 
+          type: 'complete' 
         })
         await writer.write(new TextEncoder().encode(`data: ${completeData}\n\n`))
         await writer.close()
       } catch (error) {
-        console.error('Error streaming passage:', error)
-        const errorData = JSON.stringify({ error: 'Failed to generate passage' })
+        console.error('Error streaming questions:', error)
+        const errorData = JSON.stringify({ error: 'Failed to generate questions' })
         await writer.write(new TextEncoder().encode(`data: ${errorData}\n\n`))
         await writer.close()
       }
@@ -56,9 +62,9 @@ export async function POST(request: Request) {
       },
     })
   } catch (error) {
-    console.error('Error generating passage:', error)
+    console.error('Error generating questions:', error)
     return NextResponse.json(
-      { error: 'Failed to generate passage' },
+      { error: 'Failed to generate questions' },
       { status: 500 }
     )
   }
