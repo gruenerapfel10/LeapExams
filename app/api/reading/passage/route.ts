@@ -1,23 +1,29 @@
 import { NextResponse } from 'next/server'
 import { streamReadingPassage } from '@/lib/ai/reading'
-import { DEFAULT_EXAM, EXAM_TYPES } from '@/lib/constants'
+import { DEFAULT_EXAM, EXAM_TYPES, EXAM_LANGUAGES, ExamType } from '@/lib/constants'
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    let { examType = DEFAULT_EXAM } = body
-
-    // Validate exam type
-    if (!Object.values(EXAM_TYPES).includes(examType)) {
+    let { examType = DEFAULT_EXAM } = body as { examType?: string }
+    
+    // Validate exam type and ensure it's properly typed
+    let validExamType: ExamType
+    if (Object.values(EXAM_TYPES).includes(examType as ExamType)) {
+      validExamType = examType as ExamType
+    } else {
       console.warn(`Invalid exam type received: ${examType}, falling back to ${DEFAULT_EXAM}`)
-      examType = DEFAULT_EXAM
+      validExamType = DEFAULT_EXAM
     }
     
-    // Log for debugging
-    console.log(`Streaming reading passage for exam type: ${examType}`)
+    // Get language info for logging
+    const language = EXAM_LANGUAGES[validExamType]
+    
+    // Comprehensive logging
+    console.log(`Streaming reading passage for ${validExamType.toUpperCase()} exam in ${language.name}`)
     
     // Get streaming object
-    const { partialObjectStream, object } = streamReadingPassage(examType)
+    const { partialObjectStream, object } = streamReadingPassage(validExamType)
     
     // Create a stream transformer
     const stream = new TransformStream()
@@ -36,7 +42,7 @@ export async function POST(request: Request) {
         const completeData = JSON.stringify({ 
           passage: completeObject, 
           type: 'complete',
-          examType 
+          examType: validExamType 
         })
         await writer.write(new TextEncoder().encode(`data: ${completeData}\n\n`))
         await writer.close()

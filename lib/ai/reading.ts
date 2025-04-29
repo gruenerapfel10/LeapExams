@@ -1,93 +1,89 @@
-import { streamObject } from 'ai'
-import { z } from 'zod'
-import { myProvider } from './models'
-import { EXAM_LANGUAGES, ExamType, EXAM_TYPES } from '../constants'
-
-const passageSchema = z.object({
-  title: z.string(),
-  content: z.string()
-})
-
-const questionSchema = z.object({
-  id: z.number(),
-  text: z.string(),
-  options: z.array(z.string()).length(4),
-  correctAnswer: z.number().min(0).max(3)
-})
-
-const questionsSchema = z.object({
-  questions: z.array(questionSchema).length(3)
-})
+import { ExamType } from '../constants';
+import { ExamService } from '../exam/service';
+import { ExamHandlerFactory } from '../exam/factory';
+import { UnimplementedLevelError } from '../exam/goethe-handler';
 
 // Helper to validate exam type
 function validateExamType(examType: ExamType): ExamType {
-  if (!Object.values(EXAM_TYPES).includes(examType)) {
+  try {
+    return ExamHandlerFactory.validateExamType(examType);
+  } catch (error) {
     console.warn(`Invalid exam type: ${examType}, falling back to default`);
-    return EXAM_TYPES.IELTS;
+    return 'ielts' as ExamType;
   }
-  return examType;
 }
 
-export function streamReadingPassage(examType: ExamType) {
+/**
+ * Stream reading passage for the given exam type and difficulty
+ * If no difficulty is provided, the default difficulty for the exam type will be used
+ */
+export function streamReadingPassage(examType: ExamType, difficultyId?: string) {
   // Validate exam type to prevent issues
   examType = validateExamType(examType);
   
-  const model = myProvider.languageModel('gpt-4o-mini')
-  const language = EXAM_LANGUAGES[examType]
+  // Get the handler for this exam type
+  const handler = ExamHandlerFactory.getHandler(examType);
   
-  console.log(`Streaming reading passage in ${language.name} for ${examType}`);
+  // Use the provided difficulty or the default
+  const difficulty = difficultyId ? 
+    (handler.getDifficultyById(difficultyId) || handler.getDefaultDifficulty()) : 
+    handler.getDefaultDifficulty();
   
-  return streamObject({
-    model,
-    schema: passageSchema,
-    prompt: `Generate a reading passage for ${examType.toUpperCase()} reading practice with the following requirements:
-    - Title should be clear and descriptive
-    - Content should be 300-400 words long
-    - Cover an academic topic suitable for ${examType.toUpperCase()}
-    - Use clear and formal language in ${language.name}
-    - IMPORTANT: The entire passage MUST be written in ${language.name} language (${language.code})
-    - Include 3-4 paragraphs
-    - Focus on a single main idea with supporting details
-    - Do not include markdown formatting or special characters
-    - The passage should be culturally appropriate for ${language.name} speakers`
-  })
+  try {
+    return ExamService.streamReadingPassage(examType, difficulty.id);
+  } catch (error) {
+    if (error instanceof UnimplementedLevelError) {
+      // Create a custom stream to return the error
+      return {
+        partialObjectStream: (async function* () {
+          yield { error: error.message, type: 'unimplemented_level_error' };
+        })(),
+        object: Promise.resolve({ error: error.message, type: 'unimplemented_level_error' })
+      };
+    }
+    throw error; // Re-throw other errors
+  }
 }
 
-export function streamQuestions(passage: string, examType: ExamType) {
+/**
+ * Stream questions for a passage with the given exam type and difficulty
+ * If no difficulty is provided, the default difficulty for the exam type will be used
+ */
+export function streamQuestions(passage: string, examType: ExamType, difficultyId?: string) {
   // Validate exam type to prevent issues
   examType = validateExamType(examType);
   
-  const model = myProvider.languageModel('gpt-4o-mini')
-  const language = EXAM_LANGUAGES[examType]
+  // Get the handler for this exam type
+  const handler = ExamHandlerFactory.getHandler(examType);
   
-  console.log(`Streaming questions in ${language.name} for ${examType}`);
+  // Use the provided difficulty or the default
+  const difficulty = difficultyId ? 
+    (handler.getDifficultyById(difficultyId) || handler.getDefaultDifficulty()) : 
+    handler.getDefaultDifficulty();
   
-  return streamObject({
-    model,
-    schema: questionsSchema,
-    prompt: `Based on the following passage, generate 3 multiple-choice questions in ${language.name}. Each question must have exactly 4 options and one correct answer (0-3).
-    
-    Passage:
-    ${passage}
-
-    Requirements:
-    - Generate exactly 3 questions in ${language.name}
-    - IMPORTANT: All questions and options MUST be written ONLY in ${language.name} language (${language.code})
-    - Each question must have exactly 4 options
-    - The correctAnswer must be a number between 0 and 3 (index of the correct option)
-    - Questions should test comprehension of the main ideas and key details
-    - Options should be plausible but only one should be correct
-    - Questions should be culturally appropriate for ${language.name} speakers`
-  })
+  try {
+    return ExamService.streamQuestions(passage, examType, difficulty.id);
+  } catch (error) {
+    if (error instanceof UnimplementedLevelError) {
+      // Create a custom stream to return the error
+      return {
+        partialObjectStream: (async function* () {
+          yield { error: error.message, type: 'unimplemented_level_error' };
+        })(),
+        object: Promise.resolve({ error: error.message, type: 'unimplemented_level_error' })
+      };
+    }
+    throw error; // Re-throw other errors
+  }
 }
 
 // Keep the original functions for compatibility
-export async function generateReadingPassage(examType: ExamType) {
-  const { object } = await streamReadingPassage(examType);
+export async function generateReadingPassage(examType: ExamType, difficultyId?: string) {
+  const { object } = await streamReadingPassage(examType, difficultyId);
   return object;
 }
 
-export async function generateQuestions(passage: string, examType: ExamType) {
-  const { object } = await streamQuestions(passage, examType);
+export async function generateQuestions(passage: string, examType: ExamType, difficultyId?: string) {
+  const { object } = await streamQuestions(passage, examType, difficultyId);
   return object;
 } 

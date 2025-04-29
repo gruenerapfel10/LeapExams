@@ -1,30 +1,38 @@
 import { NextResponse } from 'next/server'
 import { streamQuestions } from '@/lib/ai/reading'
-import { DEFAULT_EXAM, EXAM_TYPES } from '@/lib/constants'
+import { DEFAULT_EXAM, EXAM_TYPES, EXAM_LANGUAGES, ExamType } from '@/lib/constants'
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    let { examType = DEFAULT_EXAM, passage } = body
+    let { examType = DEFAULT_EXAM, passage } = body as { examType?: string, passage?: string }
 
-    if (!passage) {
+    // Validate passage content first
+    if (!passage || typeof passage !== 'string') {
+      console.error('Invalid passage content received')
       return NextResponse.json(
-        { error: 'Passage is required' },
+        { error: 'Invalid passage content' },
         { status: 400 }
       )
     }
-
-    // Validate exam type
-    if (!Object.values(EXAM_TYPES).includes(examType)) {
+    
+    // Validate exam type and ensure it's properly typed
+    let validExamType: ExamType
+    if (Object.values(EXAM_TYPES).includes(examType as ExamType)) {
+      validExamType = examType as ExamType
+    } else {
       console.warn(`Invalid exam type received: ${examType}, falling back to ${DEFAULT_EXAM}`)
-      examType = DEFAULT_EXAM
+      validExamType = DEFAULT_EXAM
     }
     
-    // Log for debugging
-    console.log(`Streaming questions for exam type: ${examType}`)
+    // Get language info for logging
+    const language = EXAM_LANGUAGES[validExamType]
+    
+    // Comprehensive logging
+    console.log(`Streaming questions for ${validExamType.toUpperCase()} exam in ${language.name}`)
     
     // Get streaming object
-    const { partialObjectStream, object } = streamQuestions(passage, examType)
+    const { partialObjectStream, object } = streamQuestions(passage, validExamType)
     
     // Create a stream transformer
     const stream = new TransformStream()
@@ -42,7 +50,8 @@ export async function POST(request: Request) {
         const completeObject = await object
         const completeData = JSON.stringify({ 
           questions: completeObject, 
-          type: 'complete' 
+          type: 'complete',
+          examType: validExamType 
         })
         await writer.write(new TextEncoder().encode(`data: ${completeData}\n\n`))
         await writer.close()

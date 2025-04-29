@@ -2,7 +2,10 @@
     "common": {
       "languageName": "English",
       "changeLanguage": "Change language",
-      "more": "More"
+      "more": "More",
+      "appName": "LeapExams",
+      "tagline": "Practice for language exams",
+      "loading": "Loading..."
     },
     "sidebar": {
       "title": "Dashboard",
@@ -19,6 +22,14 @@
       "platform": "Platform",
       "study": "Study"
     },
+    "nav": {
+      "dashboard": "Dashboard",
+      "reading": "Reading",
+      "writing": "Writing",
+      "listening": "Listening",
+      "speaking": "Speaking",
+      "settings": "Settings"
+    },
     "reading": {
       "title": "Reading Practice",
       "timer": "Time Left",
@@ -28,16 +39,35 @@
       "next": "Next",
       "previous": "Previous",
       "tryAgain": "Try Again",
-      "results": "Results",
-      "score": "Your score",
+      "results": "Your Results",
+      "score": "Score",
       "loading": "Loading reading passage...",
       "error": "Error: {message}",
       "failedToLoad": "Failed to load reading passage. Please try again.",
-      "generatingTitle": "Generating passage...",
-      "generatingContent": "Generating passage content...",
+      "generatingTitle": "Generating title...",
+      "generatingContent": "Generating reading passage...",
       "generatingQuestions": "Generating questions",
-      "waitingForPassage": "Please wait while the passage is being generated",
-      "readPassageFirst": "Please read the passage first"
+      "waitingForPassage": "Waiting for passage to be generated...",
+      "readPassageFirst": "Please read the passage first",
+      "passage": "Passage",
+      "questions": "Questions",
+      "vocabulary": "Key Vocabulary",
+      "passageTab": "Reading Passage",
+      "questionsTab": "Questions",
+      "backToConfig": "Back to configuration",
+      "submitAnswers": "Submit Answers",
+      "progressTab": "Progress",
+      "progress": "Reading Progress",
+      "questionsAnswered": "Questions Answered",
+      "readingTime": "Reading Time",
+      "estimatedTime": "Estimated time to complete",
+      "difficulty": "Difficulty",
+      "level": "Current level",
+      "status": "Generation Status",
+      "ready": "Ready",
+      "notStarted": "Not Started",
+      "generatingPassage": "Generating Passage...",
+      "generatingQuestions": "Generating Questions..."
     },
     "languages": {
       "english": "English",
@@ -45,12 +75,11 @@
       "french": "French"
     },
     "exams": {
-      "ieltsTitle": "IELTS",
-      "ieltsDescription": "International English Language Testing System",
-      "goetheTitle": "Goethe",
-      "goetheDescription": "German language exam from the Goethe-Institut",
-      "targetLanguage": "Target Language",
-      "examType": "Exam Type",
-      "interfaceLanguage": "Interface Language"
+      "ielts": "IELTS",
+      "toefl": "TOEFL",
+      "goethe": "Goethe",
+      "delf": "DELF",
+      "dele": "DELE",
+      "hsk": "HSK"
     }
   }

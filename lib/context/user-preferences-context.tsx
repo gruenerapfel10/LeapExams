@@ -6,12 +6,14 @@ import { EXAM_TYPES, ExamType, DEFAULT_EXAM } from '../constants';
 // Define types for user preferences
 interface UserPreferences {
   examType: ExamType;
+  difficulty: string;
   // Add other preferences here (language, theme, etc.)
 }
 
 // Default preferences
 const DEFAULT_PREFERENCES: UserPreferences = {
   examType: DEFAULT_EXAM,
+  difficulty: "",
   // Add other defaults here
 };
 
@@ -19,6 +21,7 @@ interface UserPreferencesContextValue {
   preferences: UserPreferences;
   isLoaded: boolean;
   setExamType: (type: ExamType) => void;
+  setDifficulty: (difficulty: string) => void;
   // Add other setter methods for preferences here
 }
 
@@ -100,11 +103,19 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
     }));
   };
 
+  const setDifficulty = (difficulty: string) => {
+    setPreferences(prev => ({
+      ...prev,
+      difficulty
+    }));
+  };
+
   // Context value
   const contextValue: UserPreferencesContextValue = {
     preferences,
     isLoaded,
     setExamType,
+    setDifficulty,
     // Add other setters here
   };
 
@@ -127,13 +138,15 @@ export function useUserPreferences() {
 }
 
 /**
- * Convenience hook to access exam type
+ * Convenience hook to access exam type and difficulty
  */
 export function useExam() {
-  const { preferences, isLoaded, setExamType } = useUserPreferences();
+  const { preferences, isLoaded, setExamType, setDifficulty } = useUserPreferences();
   return {
     examType: preferences.examType,
+    difficulty: preferences.difficulty,
     isExamTypeLoaded: isLoaded,
-    setExamType
+    setExamType,
+    setDifficulty
   };
 } 

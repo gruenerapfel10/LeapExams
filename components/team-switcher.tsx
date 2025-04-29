@@ -16,18 +16,32 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { useExam } from "@/lib/context/user-preferences-context"
-import { EXAM_TYPES, EXAM_LANGUAGES } from "@/lib/constants"
+import { EXAM_TYPES, EXAM_LANGUAGES, ExamType } from "@/lib/constants"
+import { useTranslation } from "@/lib/i18n/hooks"
 
 export function TeamSwitcher() {
   const { examType, setExamType } = useExam()
   const [open, setOpen] = React.useState(false)
+  const { t } = useTranslation()
 
   const exams = Object.entries(EXAM_TYPES).map(([key, value]) => ({
     name: key,
     value,
     logo: EXAM_LANGUAGES[value].flag,
   }))
+  
+  // Handle exam type change
+  const handleExamChange = React.useCallback((value: ExamType) => {
+    console.log("Setting exam type to:", value)
+    setExamType(value)
+    setOpen(false)
+  }, [setExamType])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -37,13 +51,14 @@ export function TeamSwitcher() {
           role="combobox"
           aria-expanded={open}
           aria-label="Select an exam"
-          className="w-full justify-between"
+          className="w-full justify-between group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:px-2"
+          onClick={() => setOpen(!open)}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 group-data-[collapsible=icon]:gap-0">
             <span>{EXAM_LANGUAGES[examType].flag}</span>
-            <span>{examType.toUpperCase()}</span>
+            <span className="group-data-[collapsible=icon]:hidden">{examType.toUpperCase()}</span>
           </div>
-          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50 group-data-[collapsible=icon]:hidden" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
@@ -54,11 +69,8 @@ export function TeamSwitcher() {
             {exams.map((exam) => (
               <CommandItem
                 key={exam.value}
-                onSelect={() => {
-                  setExamType(exam.value)
-                  setOpen(false)
-                }}
-                className="text-sm"
+                onSelect={() => handleExamChange(exam.value as ExamType)}
+                className="text-sm cursor-pointer"
               >
                 <div className="flex items-center gap-2">
                   <span>{exam.logo}</span>

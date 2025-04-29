@@ -34,6 +34,12 @@ export async function POST(request: Request) {
         
         // Get complete passage
         const passage = await passagePromise
+        
+        // Check if passage is an error object
+        if ('error' in passage) {
+          throw new Error(passage.error)
+        }
+        
         const passageData = JSON.stringify({ 
           passage, 
           type: 'passage-complete'

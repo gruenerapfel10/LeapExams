@@ -115,58 +115,39 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
     avatar: "/avatars/default.jpg",
   };
 
-  // Don't render translated content until translations are loaded
-  if (!isTranslationLoaded) {
-    return (
-      <Sidebar collapsible="icon" {...props}>
-        <SidebarHeader>
-          <div className="px-4 py-2 flex flex-col gap-2">
-            <div className="px-4 py-2 text-sm text-muted-foreground">
-              Loading...
-            </div>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          {/* Loading state */}
-        </SidebarContent>
-        <SidebarFooter>
-          <div className="flex items-center justify-between px-4 py-2">
-            <NavUser user={userData} />
-            <ThemeToggle />
-          </div>
-        </SidebarFooter>
-        <SidebarRail />
-      </Sidebar>
-    );
-  }
-
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <div className="px-2 py-2 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <span className="text-xs font-semibold text-muted-foreground">
-              {t('exams.examType')}
+            <span className="text-xs font-semibold text-muted-foreground group-data-[collapsible=icon]:hidden">
+              {isTranslationLoaded ? t('exams.examType') : 'Exam Type'}
             </span>
             <TeamSwitcher />
           </div>
           <div className="flex flex-col gap-2">
-            <span className="text-xs font-semibold text-muted-foreground">
-              {t('exams.interfaceLanguage')}
+            <span className="text-xs font-semibold text-muted-foreground group-data-[collapsible=icon]:hidden">
+              {isTranslationLoaded ? t('exams.interfaceLanguage') : 'Interface Language'}
             </span>
             <LanguageSwitcher />
           </div>
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <NavProjects title="sidebar.platform" projects={platformItems.map(project => ({
-          ...project,
-          name: t(project.translationKey),
-        }))} />
-        <NavProjects title="sidebar.study" projects={studyItems.map(project => ({
-          ...project,
-          name: t(project.translationKey),
-        }))} />
+        <NavProjects 
+          title="sidebar.platform" 
+          projects={platformItems.map(project => ({
+            ...project,
+            name: isTranslationLoaded ? t(project.translationKey) : project.name,
+          }))} 
+        />
+        <NavProjects 
+          title="sidebar.study" 
+          projects={studyItems.map(project => ({
+            ...project,
+            name: isTranslationLoaded ? t(project.translationKey) : project.name,
+          }))} 
+        />
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center justify-between px-4 py-2">

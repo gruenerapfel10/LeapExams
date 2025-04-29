@@ -7,6 +7,7 @@ import { AIPanel } from "@/components/ai-panel";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Bot } from "lucide-react";
+import { PageIndicator } from "@/components/page-indicator";
 
 export default function DashboardLayout({
   children,
@@ -18,9 +19,12 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
-        <AppSidebar />
+        <div className="relative z-30">
+          <AppSidebar />
+        </div>
         <div className="flex-1 flex flex-col w-full">
           <SiteHeader>
+            <PageIndicator />
             <Button
               variant="ghost"
               size="icon"
@@ -31,10 +35,8 @@ export default function DashboardLayout({
               <span className="sr-only">Toggle AI Assistant</span>
             </Button>
           </SiteHeader>
-          <main className="flex-1 p-6 md:p-8 lg:p-10 w-full">
-            <div className="mx-auto w-full">
+          <main className="flex-1 min-h-0 overflow-y-auto relative bg-blue">
               {children}
-            </div>
           </main>
         </div>
         <AIPanel open={isAIPanelOpen} onOpenChange={setIsAIPanelOpen} />

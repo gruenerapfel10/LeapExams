@@ -162,3 +162,46 @@
 .suggestion-highlight {
     @apply bg-blue-200 hover:bg-blue-300 dark:hover:bg-blue-400/50 dark:text-blue-50 dark:bg-blue-500/40;
 }
+
+/* Enhanced Allotment Sash Overrides */
+.sash {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    z-index: 15;
+    pointer-events: auto;
+    width: 100%;
+  }
+  
+  .sash::before {
+    content: "";
+    display: block;
+    border-radius: 9999px;
+    background-color: hsl(var(--secondary-foreground)) !important;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  .sash.sash-vertical::before {
+    width: 0.25rem !important;
+    height: 2rem !important;
+  }
+  
+  .sash.sash-horizontal::before {
+    width: 2rem !important;
+    height: 0.25rem !important;
+  }
+  
+  .sash:hover::before,
+  .sash.sash-active::before {
+    background-color: hsl(var(--primary)) !important;
+    opacity: 1 !important;
+  }
+  
+  /* Remove ::before from Allotment Panes */
+  .split-view-view::before {
+    content: none !important;
+  }

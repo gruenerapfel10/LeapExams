@@ -41,12 +41,12 @@ export function NavProjects({
   const { t } = useTranslation()
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>{title ? t(title) : t('sidebar.study')}</SidebarGroupLabel>
+    <SidebarGroup>
+      <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden">{title ? t(title) : t('sidebar.study')}</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild tooltip={t(item.name)}>
               <a href={item.url}>
                 <item.icon />
                 <span>{t(item.name)}</span>

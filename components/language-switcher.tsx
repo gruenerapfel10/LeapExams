@@ -16,6 +16,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useLanguage, UI_LANGUAGES } from '@/lib/context/language-context';
 import { useTranslation } from '@/lib/i18n/hooks';
 
@@ -34,23 +39,34 @@ export function LanguageSwitcher() {
   // Find the current language display data
   const currentLanguage = languages.find(lang => lang.value === language) || languages[0];
 
+  const button = (
+    <Button
+      variant="outline"
+      role="combobox"
+      aria-expanded={open}
+      aria-label={t('common.changeLanguage')}
+      className="w-full justify-between group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:justify-center"
+    >
+      <div className="flex items-center gap-2 group-data-[collapsible=icon]:gap-0">
+        <Globe className="h-4 w-4" />
+        <span className="group-data-[collapsible=icon]:hidden">{currentLanguage.flag}</span>
+        <span className="group-data-[collapsible=icon]:hidden">{currentLanguage.label}</span>
+      </div>
+      <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50 group-data-[collapsible=icon]:hidden" />
+    </Button>
+  )
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          aria-label={t('common.changeLanguage')}
-          className="w-full justify-between"
-        >
-          <div className="flex items-center gap-2">
-            <Globe className="h-4 w-4" />
-            <span>{currentLanguage.flag}</span>
-            <span>{currentLanguage.label}</span>
-          </div>
-          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            {button}
+          </TooltipTrigger>
+          <TooltipContent side="right" align="center" className="group-data-[collapsible=icon]:block hidden">
+            {currentLanguage.label}
+          </TooltipContent>
+        </Tooltip>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
