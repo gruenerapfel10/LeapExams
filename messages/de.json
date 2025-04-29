@@ -44,6 +44,8 @@
       "ieltsDescription": "Internationales Englisch-Sprachtestsystem",
       "goetheTitle": "Goethe",
       "goetheDescription": "Deutschprüfung des Goethe-Instituts",
-      "targetLanguage": "Zielsprache"
+      "targetLanguage": "Zielsprache",
+      "examType": "Prüfungstyp",
+      "interfaceLanguage": "Anzeigesprache"
     }
   }

@@ -28,19 +28,21 @@ import {
 
 export function NavProjects({
   projects,
+  title,
 }: {
   projects: {
     name: string
     url: string
     icon: LucideIcon
   }[]
+  title?: string
 }) {
   const { isMobile } = useSidebar()
   const { t } = useTranslation()
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>{t('sidebar.study')}</SidebarGroupLabel>
+      <SidebarGroupLabel>{title ? t(title) : t('sidebar.study')}</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>

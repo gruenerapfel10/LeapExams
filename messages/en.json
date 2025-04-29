@@ -44,6 +44,8 @@
       "ieltsDescription": "International English Language Testing System",
       "goetheTitle": "Goethe",
       "goetheDescription": "German language exam from the Goethe-Institut",
-      "targetLanguage": "Target Language"
+      "targetLanguage": "Target Language",
+      "examType": "Exam Type",
+      "interfaceLanguage": "Interface Language"
     }
   }

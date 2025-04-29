@@ -32,105 +32,65 @@ import { LanguageSwitcher } from "@/components/language-switcher"
 import { useTranslation } from "@/lib/i18n/hooks"
 
 // This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Overview",
-      url: "/dashboard/overview",
-      icon: LayoutDashboard,
-      isActive: true,
-    },
-    {
-      title: "Mock Exams",
-      url: "/dashboard/mock-exams",
-      icon: FileText,
-      items: [
-        {
-          title: "IELTS Mock Tests",
-          url: "/dashboard/mock-exams/ielts",
-        },
-        {
-          title: "Goethe Mock Tests",
-          url: "/dashboard/mock-exams/goethe",
-        },
-        {
-          title: "Previous Attempts",
-          url: "/dashboard/mock-exams/history",
-        },
-      ],
-    },
-    {
-      title: "Progress",
-      url: "/dashboard/progress",
-      icon: Trophy,
-      items: [
-        {
-          title: "Performance Analytics",
-          url: "/dashboard/progress/analytics",
-        },
-        {
-          title: "Study History",
-          url: "/dashboard/progress/history",
-        },
-        {
-          title: "Achievements",
-          url: "/dashboard/progress/achievements",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "/dashboard/settings",
-      icon: Settings2,
-      items: [
-        {
-          title: "Profile",
-          url: "/dashboard/settings/profile",
-        },
-        {
-          title: "Preferences",
-          url: "/dashboard/settings/preferences",
-        },
-        {
-          title: "Notifications",
-          url: "/dashboard/settings/notifications",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Reading Practice",
-      translationKey: "sidebar.readingPractice",
-      url: "/dashboard/reading",
-      icon: BookOpen,
-    },
-    {
-      name: "Listening Practice",
-      translationKey: "sidebar.listeningPractice",
-      url: "/dashboard/listening",
-      icon: Headphones,
-    },
-    {
-      name: "Writing Practice",
-      translationKey: "sidebar.writingPractice",
-      url: "/dashboard/writing",
-      icon: PenTool,
-    },
-    {
-      name: "Speaking Practice",
-      translationKey: "sidebar.speakingPractice",
-      url: "/dashboard/speaking",
-      icon: Mic,
-    },
-    {
-      name: "Study Materials",
-      translationKey: "sidebar.studyMaterials",
-      url: "/dashboard/materials",
-      icon: BookOpen,
-    },
-  ],
-}
+const platformItems = [
+  {
+    name: "Platform",
+    translationKey: "sidebar.platform",
+    url: "/dashboard/platform",
+    icon: LayoutDashboard,
+  },
+  {
+    name: "Mock Exams",
+    translationKey: "sidebar.mockExams",
+    url: "/dashboard/mock-exams",
+    icon: FileText,
+  },
+  {
+    name: "Progress",
+    translationKey: "sidebar.progress",
+    url: "/dashboard/progress",
+    icon: Trophy,
+  },
+  {
+    name: "Settings",
+    translationKey: "sidebar.settings",
+    url: "/dashboard/settings",
+    icon: Settings2,
+  },
+]
+
+const studyItems = [
+  {
+    name: "Reading Practice",
+    translationKey: "sidebar.readingPractice",
+    url: "/dashboard/reading",
+    icon: BookOpen,
+  },
+  {
+    name: "Listening Practice",
+    translationKey: "sidebar.listeningPractice",
+    url: "/dashboard/listening",
+    icon: Headphones,
+  },
+  {
+    name: "Writing Practice",
+    translationKey: "sidebar.writingPractice",
+    url: "/dashboard/writing",
+    icon: PenTool,
+  },
+  {
+    name: "Speaking Practice",
+    translationKey: "sidebar.speakingPractice",
+    url: "/dashboard/speaking",
+    icon: Mic,
+  },
+  {
+    name: "Study Materials",
+    translationKey: "sidebar.studyMaterials",
+    url: "/dashboard/materials",
+    icon: GraduationCap,
+  },
+]
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user?: {
@@ -160,12 +120,10 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
     return (
       <Sidebar collapsible="icon" {...props}>
         <SidebarHeader>
-          <TeamSwitcher />
-          <div className="px-4 py-2">
-            <LanguageSwitcher />
-          </div>
-          <div className="px-4 py-2 text-sm text-muted-foreground">
-            Loading...
+          <div className="px-4 py-2 flex flex-col gap-2">
+            <div className="px-4 py-2 text-sm text-muted-foreground">
+              Loading...
+            </div>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -185,16 +143,27 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher />
-        <div className="px-4 py-2">
-          <LanguageSwitcher />
-        </div>
-        <div className="px-4 py-2 text-sm text-muted-foreground">
-          {t('exams.targetLanguage')}: {currentLanguage.flag} {currentLanguage.name}
+        <div className="px-2 py-2 flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-semibold text-muted-foreground">
+              {t('exams.examType')}
+            </span>
+            <TeamSwitcher />
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-semibold text-muted-foreground">
+              {t('exams.interfaceLanguage')}
+            </span>
+            <LanguageSwitcher />
+          </div>
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <NavProjects projects={data.projects.map(project => ({
+        <NavProjects title="sidebar.platform" projects={platformItems.map(project => ({
+          ...project,
+          name: t(project.translationKey),
+        }))} />
+        <NavProjects title="sidebar.study" projects={studyItems.map(project => ({
           ...project,
           name: t(project.translationKey),
         }))} />
