@@ -25,7 +25,7 @@ export default function PracticeLayout({
   }
 
   return (
-    <div className="h-full p-4 md:p-6 lg:p-8">
+    <div className="h-full p-2 md:p-3 lg:p-4">
       {children}
     </div>
   );

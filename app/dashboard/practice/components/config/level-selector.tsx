@@ -1,44 +1,39 @@
 import { Button } from "@/components/ui/button";
-import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { skillLevels } from "@/lib/exam/levels";
+import { cn } from "@/lib/utils";
+import { ChevronRight } from "lucide-react";
 
 interface LevelSelectorProps {
   selectedLevel: string;
-  availableLevels: string[];
-  onSelect: (level: string) => void;
+  setSelectedLevel: (level: string) => void;
+  availableLevels: Array<{ id: string; label: string }>;
 }
 
-export function LevelSelector({
-  selectedLevel,
-  availableLevels,
-  onSelect,
+export function LevelSelector({ 
+  selectedLevel, 
+  setSelectedLevel, 
+  availableLevels 
 }: LevelSelectorProps) {
   return (
-    <>
-      <CardHeader>
-        <CardTitle>Select Level</CardTitle>
-        <CardDescription>Choose your proficiency level</CardDescription>
-      </CardHeader>
-      <div className="grid grid-cols-2 gap-4">
-        {availableLevels.map((level) => (
+    <div className="flex-1 flex flex-col">
+      <div className="grid grid-cols-3 gap-2 flex-1">
+        {availableLevels.map(({ id, label }) => (
           <Button
-            key={level}
-            variant={selectedLevel === level ? "default" : "outline"}
-            className="h-20 flex flex-col items-center gap-2"
-            onClick={() => onSelect(level)}
+            key={id}
+            variant={selectedLevel === id ? "default" : "outline"}
+            className={cn(
+              "h-full flex flex-col items-center justify-center relative",
+              selectedLevel === id && "border-primary"
+            )}
+            onClick={() => setSelectedLevel(id)}
           >
-            <span className="text-lg font-semibold">{level}</span>
-            <span className="text-sm text-muted-foreground">
-              {level === "A1" && "Beginner"}
-              {level === "A2" && "Elementary"}
-              {level === "B1" && "Intermediate"}
-              {level === "B2" && "Upper Intermediate"}
-              {level === "C1" && "Advanced"}
-              {level === "C2" && "Mastery"}
-            </span>
+            <span className="text-xs font-medium">{id.toUpperCase()}</span>
+            <span className="text-[10px] text-muted-foreground">{label}</span>
+            {selectedLevel === id && (
+              <ChevronRight className="absolute right-2 h-4 w-4 text-primary" />
+            )}
           </Button>
         ))}
       </div>
-    </>
+    </div>
   );
 } 

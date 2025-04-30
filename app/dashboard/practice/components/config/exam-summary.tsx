@@ -1,37 +1,89 @@
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Level } from "@/lib/exam/levels";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Clock, BookOpen, Target, FileQuestion, Brain } from "lucide-react";
+import { useMediaQuery } from "@/app/hooks/use-media-query";
+import { ModuleConfig, LevelConfig } from "@/lib/exam";
 
 interface ExamSummaryProps {
-  levelConfig: Level;
+  moduleConfig: ModuleConfig;
+  levelConfig: LevelConfig;
   onStart: () => void;
 }
 
-function SummaryItem({ label, value }: { label: string; value: string | number }) {
-  return (
-    <div className="flex justify-between items-center text-sm">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="font-medium">{value}</span>
-    </div>
-  );
-}
-
-export function ExamSummary({ levelConfig, onStart }: ExamSummaryProps) {
+export function ExamSummary({ 
+  moduleConfig, 
+  levelConfig, 
+  onStart 
+}: ExamSummaryProps) {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  if (!moduleConfig || !levelConfig) return null;
   const { details } = levelConfig;
 
   return (
-    <>
-      <CardHeader className="p-0 pb-3">
-        <CardTitle className="text-lg">Exercise Summary</CardTitle>
-        <CardDescription className="text-sm">Review your selected settings before starting</CardDescription>
+    <Card className="h-full flex flex-col bg-muted/50">
+      <CardHeader className="p-4 pb-2 shrink-0">
+        <CardTitle className="text-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span>Exercise Summary</span>
+            <Badge variant="secondary" className="text-xs">
+              {details.examStructure.totalQuestions} questions
+            </Badge>
+          </div>
+          <Badge variant="outline" className="text-xs">
+            {details.examStructure.totalDuration} min
+          </Badge>
+        </CardTitle>
+        <CardDescription className="text-sm">Review your settings before starting</CardDescription>
       </CardHeader>
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <SummaryItem label="Selected Level" value={levelConfig.label} />
-          <SummaryItem label="Total Questions" value={details.examStructure.totalQuestions} />
-          <SummaryItem label="Total Time" value={`${details.examStructure.totalTime} minutes`} />
-          <SummaryItem label="Passing Score" value={`${details.examStructure.passingScore}%`} />
+      <CardContent className="p-4 flex-1 flex flex-col gap-4">
+        <div className={`grid ${isDesktop ? 'grid-cols-2' : 'grid-cols-1'} gap-4`}>
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <BookOpen className="h-4 w-4" />
+              <span>Module</span>
+            </div>
+            <p className="text-sm">{moduleConfig.label}</p>
+          </div>
+
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Target className="h-4 w-4" />
+              <span>Level</span>
+            </div>
+            <p className="text-sm">{levelConfig.label}</p>
+          </div>
+
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Brain className="h-4 w-4" />
+              <span>Difficulty</span>
+            </div>
+            <Badge variant="secondary" className="text-sm">
+              {details.examStructure.difficulty}
+            </Badge>
+          </div>
         </div>
+
+        <Separator />
+
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <Clock className="h-4 w-4" />
+            <span>Time Structure</span>
+          </div>
+          <div className="space-y-1">
+            {details.examStructure.parts.map((part, index) => (
+              <div key={index} className="flex justify-between items-center text-sm">
+                <span className="text-muted-foreground">{part.name}</span>
+                <span className="font-medium">{part.duration} min</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex-1" />
 
         <Button className="w-full" size="lg" onClick={onStart}>
           Start Exercise
@@ -40,7 +92,7 @@ export function ExamSummary({ levelConfig, onStart }: ExamSummaryProps) {
         <p className="text-xs text-muted-foreground text-center">
           You can pause and resume the exercise at any time
         </p>
-      </div>
-    </>
+      </CardContent>
+    </Card>
   );
 } 
