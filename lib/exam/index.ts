@@ -10,9 +10,6 @@ export * from './modules/base';
 import './modules/goethe';
 import './modules/ielts';
 
-// Re-export module implementations
+// Export module implementations
 export { GoetheExamModule } from './modules/goethe';
-export { IeltsExamModule } from './modules/ielts';
-
-// Export all module-related functionality via the modules index
-export * from './modules'; 
+export { IeltsExamModule } from './modules/ielts'; 

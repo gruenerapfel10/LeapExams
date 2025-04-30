@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { ConfigLayout } from "./components/config/config-layout";
 import { useExamState } from "./hooks/use-exam-state";
 
-export default function PracticePage() {
+function PracticePageContent() {
   const [isLoading, setIsLoading] = useState(true);
   const examState = useExamState();
 
@@ -34,5 +34,17 @@ export default function PracticePage() {
       availableLevels={examState.availableLevels}
       onStart={examState.startSession}
     />
+  );
+}
+
+export default function PracticePage() {
+  return (
+    <Suspense fallback={
+      <div className="h-full">
+        <div className="h-full animate-pulse bg-muted/50 rounded-lg" />
+      </div>
+    }>
+      <PracticePageContent />
+    </Suspense>
   );
 } 

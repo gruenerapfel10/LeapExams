@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { AIPanel } from "@/components/ai-panel";
@@ -24,7 +24,9 @@ export default function DashboardLayout({
         </div>
         <div className="flex-1 flex flex-col w-full">
           <SiteHeader>
-            <PageIndicator />
+            <Suspense fallback={<div className="h-14 w-full animate-pulse bg-muted/50" />}>
+              <PageIndicator />
+            </Suspense>
             <Button
               variant="ghost"
               size="icon"
