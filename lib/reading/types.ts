@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ExamType } from '../constants'
+import { ExamType } from '../exam/config'
 
 // Base interface for all reading exam handlers
 export interface ReadingExamHandler {

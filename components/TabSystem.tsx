@@ -11,173 +11,47 @@ import { X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ArrowLeft, Hash }
 import type { XYCoord } from 'react-dnd';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { 
+  BsFileEarmarkText, 
+  BsFileEarmarkCode,
+  BsFileEarmarkRichtext,
+  BsFileEarmarkBarGraph,
+  BsFileEarmarkTextFill,
+  BsFileEarmarkCodeFill,
+  BsFileEarmarkRichtextFill,
+  BsFileEarmarkBarGraphFill,
+} from 'react-icons/bs';
 import 'allotment/dist/style.css';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible';
 
-// Custom SVG icons with gradient support
+// Replace custom SVG icons with react-icons
 const FileQuestionIcon = ({ isActive }: { isActive: boolean }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path 
-      d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" 
-      stroke={isActive ? "url(#fileQuestionGradient1)" : "url(#fileQuestionGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <path 
-      d="M14 2V8H20" 
-      stroke={isActive ? "url(#fileQuestionGradient1)" : "url(#fileQuestionGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <path 
-      d="M12 18V18.01" 
-      stroke={isActive ? "url(#fileQuestionGradient1)" : "url(#fileQuestionGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <path 
-      d="M12 14C12.8284 14 13.5 13.3284 13.5 12.5C13.5 11.6716 12.8284 11 12 11C11.1716 11 10.5 11.6716 10.5 12.5C10.5 13.3284 11.1716 14 12 14Z" 
-      stroke={isActive ? "url(#fileQuestionGradient1)" : "url(#fileQuestionGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <defs>
-      <linearGradient id="fileQuestionGradient1" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#3B82F6" />
-        <stop offset="100%" stopColor="#8B5CF6" />
-      </linearGradient>
-      <linearGradient id="fileQuestionGradient2" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#9CA3AF" />
-        <stop offset="100%" stopColor="#6B7280" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <BsFileEarmarkText className={cn(
+    "h-4 w-4",
+    isActive ? "text-blue-500" : "text-muted-foreground"
+  )} />
 );
 
 const BookOpenIcon = ({ isActive }: { isActive: boolean }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path 
-      d="M2 3H8C9.06087 3 10.0783 3.42143 10.8284 4.17157C11.5786 4.92172 12 5.93913 12 7V21C12 20.2044 11.6839 19.4413 11.1213 18.8787C10.5587 18.3161 9.79565 18 9 18H2V3Z" 
-      stroke={isActive ? "url(#bookOpenGradient1)" : "url(#bookOpenGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <path 
-      d="M22 3H16C14.9391 3 13.9217 3.42143 13.1716 4.17157C12.4214 4.92172 12 5.93913 12 7V21C12 20.2044 12.3161 19.4413 12.8787 18.8787C13.4413 18.3161 14.2044 18 15 18H22V3Z" 
-      stroke={isActive ? "url(#bookOpenGradient1)" : "url(#bookOpenGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <defs>
-      <linearGradient id="bookOpenGradient1" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#10B981" />
-        <stop offset="100%" stopColor="#059669" />
-      </linearGradient>
-      <linearGradient id="bookOpenGradient2" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#9CA3AF" />
-        <stop offset="100%" stopColor="#6B7280" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <BsFileEarmarkRichtext className={cn(
+    "h-4 w-4",
+    isActive ? "text-emerald-500" : "text-muted-foreground"
+  )} />
 );
 
 const BotIcon = ({ isActive }: { isActive: boolean }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path 
-      d="M12 8V4H8" 
-      stroke={isActive ? "url(#botGradient1)" : "url(#botGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <rect 
-      x="4" 
-      y="8" 
-      width="16" 
-      height="10" 
-      rx="2" 
-      stroke={isActive ? "url(#botGradient1)" : "url(#botGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <path 
-      d="M8 14H8.01" 
-      stroke={isActive ? "url(#botGradient1)" : "url(#botGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <path 
-      d="M12 14H12.01" 
-      stroke={isActive ? "url(#botGradient1)" : "url(#botGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <path 
-      d="M16 14H16.01" 
-      stroke={isActive ? "url(#botGradient1)" : "url(#botGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <defs>
-      <linearGradient id="botGradient1" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#F59E0B" />
-        <stop offset="100%" stopColor="#D97706" />
-      </linearGradient>
-      <linearGradient id="botGradient2" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#9CA3AF" />
-        <stop offset="100%" stopColor="#6B7280" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <BsFileEarmarkCode className={cn(
+    "h-4 w-4",
+    isActive ? "text-amber-500" : "text-muted-foreground"
+  )} />
 );
 
 const PercentIcon = ({ isActive }: { isActive: boolean }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path 
-      d="M19 5L5 19" 
-      stroke={isActive ? "url(#percentGradient1)" : "url(#percentGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <circle 
-      cx="6.5" 
-      cy="6.5" 
-      r="2.5" 
-      stroke={isActive ? "url(#percentGradient1)" : "url(#percentGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <circle 
-      cx="17.5" 
-      cy="17.5" 
-      r="2.5" 
-      stroke={isActive ? "url(#percentGradient1)" : "url(#percentGradient2)"} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-    <defs>
-      <linearGradient id="percentGradient1" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#8B5CF6" />
-        <stop offset="100%" stopColor="#3B82F6" />
-      </linearGradient>
-      <linearGradient id="percentGradient2" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#9CA3AF" />
-        <stop offset="100%" stopColor="#6B7280" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <BsFileEarmarkBarGraph className={cn(
+    "h-4 w-4",
+    isActive ? "text-purple-500" : "text-muted-foreground"
+  )} />
 );
 
 // Define Item Type for Drag and Drop
@@ -212,7 +86,7 @@ interface TabItemProps {
 }
 
 function TabItem({ tab, isActive, windowId, nodeId, onTabClick, onCloseTab }: TabItemProps) {
-  const tabItemRef = useRef<HTMLDivElement>(null);
+  const tabItemRef = useRef<HTMLButtonElement>(null);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.TAB,
     item: { id: tab.id, windowId: windowId, tabData: tab, type: ItemTypes.TAB } as DragItem,
@@ -227,43 +101,51 @@ function TabItem({ tab, isActive, windowId, nodeId, onTabClick, onCloseTab }: Ta
       case 'bookOpen': return <BookOpenIcon isActive={isActive} />;
       case 'bot': return <BotIcon isActive={isActive} />;
       case 'percent': return <PercentIcon isActive={isActive} />;
-      case 'hash': return <Hash className={cn("h-4 w-4", isActive ? "text-primary" : "text-muted-foreground")} />;
+      case 'hash': return <Hash className={cn("h-3.5 w-3.5", isActive ? "text-primary" : "text-muted-foreground")} />;
       default: return tab.icon;
     }
   };
 
   return (
-    <div
+    <TabsTrigger
       ref={tabItemRef}
+      value={tab.id}
       className={cn(
         "relative flex items-center flex-shrink-0 cursor-grab",
-        "gap-2 rounded-t-md px-3 py-2 transition-all",
-        "border-b-2",
-        "modern-text-sm",
-        isActive
-          ? "border-b-primary text-primary bg-gradient-to-br from-primary/15 via-primary/10 to-primary/15 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.2)] dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.4)]"
-          : "border-b-transparent text-muted-foreground hover:text-foreground hover:bg-gradient-to-br hover:from-muted/15 hover:via-muted/10 hover:to-muted/15",
+        "gap-2 px-3 py-1.5 transition-all",
+        "modern-text-xs",
         isDragging ? "opacity-50 cursor-grabbing" : "opacity-100",
         "hover-lift active-scale"
       )}
       onClick={onTabClick}
       style={{ WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none', userSelect: 'none' }}
     >
-      {tab.iconType && <span className="h-4 w-4 animate-scale-in">{renderIcon()}</span>}
-      <span className="font-medium tracking-tight">{tab.title}</span>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-4 w-4 rounded-full hover:bg-muted/20 ml-auto transition-all"
+      {tab.iconType && (
+        <span className="flex items-center justify-center h-4 w-4 shrink-0">
+          {renderIcon()}
+        </span>
+      )}
+      <span className="font-medium tracking-tight truncate max-w-[120px]">{tab.title}</span>
+      <div
+        role="button"
+        tabIndex={0}
+        className="h-4 w-4 rounded-full hover:bg-muted/20 ml-1 transition-all flex items-center justify-center shrink-0"
         onClick={(e) => { 
           e.stopPropagation();
           onCloseTab(e);
         }}
-        disabled={isDragging}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            onCloseTab(e as any);
+          }
+        }}
+        aria-label="Close tab"
       >
         <X className="h-3 w-3" />
-      </Button>
-    </div>
+      </div>
+    </TabsTrigger>
   );
 }
 
@@ -335,7 +217,7 @@ interface TabWindowProps {
 type Quadrant = 'top' | 'bottom' | 'left' | 'right' | 'center' | null;
 
 // Define header height constant
-const HEADER_HEIGHT = 42; // px
+const HEADER_HEIGHT = 24; // px - reduced from 32px
 
 // --- Updated TabWindow Component ---
 function TabWindow({ 
@@ -455,71 +337,73 @@ function TabWindow({
   return (
     <Card ref={dropRef} className={cn(
         "relative flex flex-col h-full w-full rounded-lg overflow-hidden",
-        "transition-all duration-200"
-    )}>
-      {/* Tab Header */}
-      <div className={cn(
-        "flex items-center justify-between min-h-[42px] z-10",
-        "border-b border-border/50",
-        "backdrop-blur-md",
         "transition-all duration-200",
-        isOver && isOverHeader && !hoverQuadrant && !highlightedDividerIndex && "bg-white/5 border-white/20" 
-      )}>
-        <div className="flex items-center overflow-x-auto px-1"> 
-          {tabs.length === 0 ? (
-            <div className="px-4 py-2 modern-text-sm text-muted-foreground italic animate-fade-in-up">
-              Drop tabs here
-            </div>
-          ) : (
-            <> 
-              <Divider 
-                index={0} 
-                nodeId={nodeId}
-                isHighlighted={highlightedDividerIndex === 0}
-                onHover={setHighlightedDividerIndex}
-                handleReorder={handleReorder}
-              />
-              {tabs.map((tab, i) => (
-                <React.Fragment key={tab.id}>
-                  <TabItem 
-                    tab={tab}
-                    isActive={activeTab === tab.id}
-                    windowId={nodeId}
-                    nodeId={nodeId}
-                    onTabClick={() => onTabClick(nodeId, tab.id)}
-                    onCloseTab={(e) => onCloseTab(nodeId, tab.id)}
-                  />
+        "bg-muted/50"
+    )}>
+      <Collapsible open={!isCollapsed}>
+        <div className={cn(
+          "flex items-center justify-between min-h-[24px] z-10",
+          "border-b border-border/50",
+          "backdrop-blur-md",
+          "transition-all duration-200",
+          isOver && isOverHeader && !hoverQuadrant && !highlightedDividerIndex && "bg-white/5 border-white/20" 
+        )}>
+          <Tabs value={activeTab} className="w-full">
+            <TabsList className="w-full justify-start">
+              {tabs.length === 0 ? (
+                <div className="px-2 py-1 modern-text-xs text-muted-foreground italic animate-fade-in-up">
+                  Drop tabs here
+                </div>
+              ) : (
+                <> 
                   <Divider 
-                    index={i + 1}
+                    index={0} 
                     nodeId={nodeId}
-                    isHighlighted={highlightedDividerIndex === i + 1}
+                    isHighlighted={highlightedDividerIndex === 0}
                     onHover={setHighlightedDividerIndex}
                     handleReorder={handleReorder}
                   />
-                </React.Fragment>
-              ))}
-            </>
-          )}
+                  {tabs.map((tab, i) => (
+                    <React.Fragment key={tab.id}>
+                      <TabItem 
+                        tab={tab}
+                        isActive={activeTab === tab.id}
+                        windowId={nodeId}
+                        nodeId={nodeId}
+                        onTabClick={() => onTabClick(nodeId, tab.id)}
+                        onCloseTab={(e) => onCloseTab(nodeId, tab.id)}
+                      />
+                      <Divider 
+                        index={i + 1}
+                        nodeId={nodeId}
+                        isHighlighted={highlightedDividerIndex === i + 1}
+                        onHover={setHighlightedDividerIndex}
+                        handleReorder={handleReorder}
+                      />
+                    </React.Fragment>
+                  ))}
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-4 w-4 text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-all ml-auto"
+                    onClick={() => onToggleCollapse(nodeId)}
+                  >
+                    <CollapseIcon className="h-3 w-3" />
+                  </Button>
+                </>
+              )}
+            </TabsList>
+          </Tabs>
         </div>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="h-6 w-6 text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-all mr-1" 
-          onClick={() => onToggleCollapse(nodeId)}
-        >
-           <CollapseIcon className="h-4 w-4" />
-        </Button>
-      </div>
 
-      {/* Tab Content Area */}
-      <div className={cn(
-        "flex-1 overflow-auto z-10 transition-all duration-200 flex flex-col",
-        isCollapsed ? "hidden" : "p-0"
-      )}>
-        <div className="flex-1 min-h-0">
-          {tabs.length > 0 && activeTab ? getContentForTab(activeTab) : null}
-        </div>
-      </div>
+        <CollapsibleContent>
+          <div className="flex-1 overflow-auto z-10 transition-all duration-200 flex flex-col p-0">
+            <div className="flex-1 min-h-0">
+              {tabs.length > 0 && activeTab ? getContentForTab(activeTab) : null}
+            </div>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
 
       {/* Overlay Indicators for Drop Targets */}
       {showOverlay && (

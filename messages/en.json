@@ -19,8 +19,15 @@
       "viewProject": "View Project",
       "shareProject": "Share Project",
       "deleteProject": "Delete Project",
-      "platform": "Platform",
-      "study": "Study"
+      "core": "Core",
+      "practice": "Practice",
+      "resources": "Resources",
+      "dashboard": "Dashboard",
+      "progress": "Progress",
+      "mockExams": "Mock Exams",
+      "vocabulary": "Vocabulary",
+      "grammar": "Grammar",
+      "schedule": "Schedule"
     },
     "nav": {
       "dashboard": "Dashboard",

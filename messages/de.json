@@ -16,8 +16,15 @@
       "viewProject": "Projekt anzeigen",
       "shareProject": "Projekt teilen",
       "deleteProject": "Projekt löschen",
-      "platform": "Plattform",
-      "study": "Studium"
+      "core": "Kernfunktionen",
+      "practice": "Übungen",
+      "resources": "Ressourcen",
+      "dashboard": "Dashboard",
+      "progress": "Fortschritt",
+      "mockExams": "Probeprüfungen",
+      "vocabulary": "Vokabeln",
+      "grammar": "Grammatik",
+      "schedule": "Zeitplan"
     },
     "reading": {
       "title": "Leseübung",

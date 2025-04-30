@@ -32,11 +32,29 @@ The handler factory (`ReadingExamHandlerFactory`) creates the appropriate handle
 
 The UI factory function (`getReadingUI`) returns the appropriate component based on the exam type.
 
-### 4. API Layer
+### 4. Question Modals
+
+The system now uses a modal-based approach for handling different question types:
+
+- `QuestionModal`: Base interface that all question modals implement
+- `MultipleChoiceModal`: Implements multiple-choice questions
+- `FillGapModal`: Implements fill-in-the-gap questions
+- `ModalRegistry`: Singleton registry that manages all available modals
+
+Each modal has:
+- A unique identifier
+- A Zod schema for validation
+- A React component for rendering
+- A prompt enhancement for content generation
+
+The `QuestionRenderer` component dynamically loads the appropriate question component based on the question type.
+
+### 5. API Layer
 
 - Streaming passage generation
 - Streaming questions generation
 - Exam-type specific prompts and schemas
+- Modal-specific prompt enhancements for different question types
 
 ## Flow
 
@@ -44,11 +62,13 @@ The UI factory function (`getReadingUI`) returns the appropriate component based
 2. Reading page fetches the appropriate UI component using the factory
 3. When content generation starts, the appropriate handler is created using the factory
 4. The handler provides exam-specific prompts and schemas to the AI service
-5. The generated content is rendered using the specialized UI component
+5. The handler selects appropriate question modals based on the content
+6. The generated content is rendered using the specialized UI component
+7. Each question is rendered by the `QuestionRenderer` based on its modal type
 
 ## Extension Points
 
-To add a new exam type:
+### Adding a New Exam Type
 
 1. Add a new type to `EXAM_TYPES` in constants
 2. Create specialized schemas in `lib/reading/types.ts`
@@ -57,10 +77,19 @@ To add a new exam type:
 5. Create a specialized UI component
 6. Add the new component to the UI factory
 
+### Adding a New Question Type
+
+1. Create a new modal class implementing the `QuestionModal` interface
+2. Define a Zod schema for validation
+3. Create a React component for rendering
+4. Register the new modal in the `ModalRegistry`
+5. Update level-specific handlers to use the new modal
+
 ## Benefits
 
-- **Extensibility**: New exam types can be added without modifying existing code
+- **Extensibility**: New exam types and question types can be added without modifying existing code
 - **Separation of Concerns**: UI, business logic, and data handling are clearly separated
-- **Specialized Experience**: Each exam type can provide a tailored experience
+- **Specialized Experience**: Each exam type and question type can provide a tailored experience
 - **Code Reuse**: Common functionality is shared through inheritance and composition
-- **Type Safety**: Zod schemas ensure consistent data structures 
+- **Type Safety**: Zod schemas ensure consistent data structures
+- **Modular Design**: Question types are modular and can be reused across different exam types 

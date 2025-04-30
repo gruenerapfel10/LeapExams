@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ExamType, EXAM_LANGUAGES } from '../constants'
+import { ExamType, EXAM_LANGUAGES } from '../exam/config'
 import { 
   ReadingExamHandler, 
   basePassageSchema, 

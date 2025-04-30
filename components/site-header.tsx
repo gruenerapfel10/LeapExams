@@ -9,7 +9,7 @@ interface SiteHeaderProps {
 export function SiteHeader({ children }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-20 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
+      <div className="container flex h-14 items-center p-4">
         <SidebarTrigger />
         <div className="ml-4 mr-4 flex-1 overflow-hidden">
           {Array.isArray(children) && children.length > 0 && children[0]}

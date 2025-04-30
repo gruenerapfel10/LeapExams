@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { EXAM_TYPES, ExamType, DEFAULT_EXAM } from '../constants';
+import { EXAM_TYPES, ExamType, DEFAULT_EXAM } from '../exam/config';
 
 // Define types for user preferences
 interface UserPreferences {

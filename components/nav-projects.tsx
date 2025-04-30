@@ -29,13 +29,22 @@ import {
 export function NavProjects({
   projects,
   title,
+  showMore = false,
+  showActions = false,
 }: {
   projects: {
     name: string
     url: string
     icon: LucideIcon
+    actions?: {
+      view?: boolean
+      share?: boolean
+      delete?: boolean
+    }
   }[]
   title?: string
+  showMore?: boolean
+  showActions?: boolean
 }) {
   const { isMobile } = useSidebar()
   const { t } = useTranslation()
@@ -52,41 +61,53 @@ export function NavProjects({
                 <span>{t(item.name)}</span>
               </a>
             </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                  <span className="sr-only">{t('common.more')}</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem>
-                  <Folder className="text-muted-foreground" />
-                  <span>{t('sidebar.viewProject')}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Forward className="text-muted-foreground" />
-                  <span>{t('sidebar.shareProject')}</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-muted-foreground" />
-                  <span>{t('sidebar.deleteProject')}</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {showActions && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuAction showOnHover>
+                    <MoreHorizontal />
+                    <span className="sr-only">{t('common.more')}</span>
+                  </SidebarMenuAction>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-48 rounded-lg"
+                  side={isMobile ? "bottom" : "right"}
+                  align={isMobile ? "end" : "start"}
+                >
+                  {item.actions?.view !== false && (
+                    <DropdownMenuItem>
+                      <Folder className="text-muted-foreground" />
+                      <span>{t('sidebar.viewProject')}</span>
+                    </DropdownMenuItem>
+                  )}
+                  {item.actions?.share !== false && (
+                    <DropdownMenuItem>
+                      <Forward className="text-muted-foreground" />
+                      <span>{t('sidebar.shareProject')}</span>
+                    </DropdownMenuItem>
+                  )}
+                  {(item.actions?.view !== false || item.actions?.share !== false) && item.actions?.delete !== false && (
+                    <DropdownMenuSeparator />
+                  )}
+                  {item.actions?.delete !== false && (
+                    <DropdownMenuItem>
+                      <Trash2 className="text-muted-foreground" />
+                      <span>{t('sidebar.deleteProject')}</span>
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal className="text-sidebar-foreground/70" />
-            <span>{t('common.more')}</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+        {showMore && (
+          <SidebarMenuItem>
+            <SidebarMenuButton className="text-sidebar-foreground/70">
+              <MoreHorizontal className="text-sidebar-foreground/70" />
+              <span>{t('common.more')}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        )}
       </SidebarMenu>
     </SidebarGroup>
   )
