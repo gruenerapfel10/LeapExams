@@ -5,6 +5,7 @@ import {
   LevelConfig, 
   ExamModuleRegistry 
 } from './base';
+import { descriptionLoader } from '../descriptions/loader';
 
 // Module types for IELTS
 const IELTS_MODULES = {
@@ -38,465 +39,44 @@ export class IeltsExamModule extends BaseExamModule {
       flag: '🇬🇧'
     };
 
-    // Define modules with proper details
+    // Load module descriptions
+    const descriptions = descriptionLoader.getExamDescriptions('ielts');
+    if (!descriptions) {
+      throw new Error('Failed to load IELTS exam descriptions');
+    }
+
+    // Define modules with descriptions
     this.moduleConfigs = {
       [IELTS_MODULES.READING]: {
         id: IELTS_MODULES.READING,
         label: 'Reading',
         details: {
-          description: 'Test your ability to understand and analyze written English texts',
-          skills: [
-            {
-              name: 'Reading comprehension',
-              description: 'Understanding main ideas and specific details in academic texts',
-              examples: ['Identifying key information', 'Understanding context', 'Following instructions']
-            },
-            {
-              name: 'Text analysis',
-              description: 'Analyzing text structure and language features',
-              examples: ['Recognizing text types', 'Understanding text organization', 'Identifying language patterns']
-            }
-          ],
-          textTypes: [
-            {
-              name: 'Academic texts',
-              description: 'Texts from academic journals, textbooks, and research papers',
-              examples: ['Research articles', 'Academic papers', 'Textbook extracts']
-            },
-            {
-              name: 'Diagrams',
-              description: 'Visual representations of information',
-              examples: ['Flow charts', 'Process diagrams', 'Technical drawings']
-            },
-            {
-              name: 'Charts',
-              description: 'Data visualization and statistical information',
-              examples: ['Bar charts', 'Line graphs', 'Pie charts']
-            }
-          ],
-          questionTypes: [
-            {
-              name: 'Multiple choice',
-              description: 'Select the correct answer from given options',
-              examples: ['Single correct answer', 'Multiple correct answers', 'Best answer selection']
-            },
-            {
-              name: 'True/False/Not Given',
-              description: 'Determine if statements are true, false, or not mentioned in the text',
-              examples: ['Factual statements', 'Inference questions', 'Opinion statements']
-            },
-            {
-              name: 'Matching',
-              description: 'Match items from two columns based on the text',
-              examples: ['Headings with paragraphs', 'Questions with answers', 'Statements with speakers']
-            }
-          ],
-          examStructure: {
-            description: 'The IELTS reading exam tests your ability to understand and analyze academic texts',
-            parts: [
-              {
-                name: 'Part 1',
-                description: 'Short texts and notices',
-                duration: 20,
-                questions: 13,
-                skills: ['Skimming', 'Scanning', 'Detailed reading'],
-                format: 'Multiple choice and matching questions',
-                tips: [
-                  'Read questions before the text',
-                  'Look for key words',
-                  'Pay attention to time management'
-                ]
-              },
-              {
-                name: 'Part 2',
-                description: 'Longer texts with complex information',
-                duration: 20,
-                questions: 13,
-                skills: ['Inference', 'Analysis', 'Evaluation'],
-                format: 'True/False/Not Given and multiple choice questions',
-                tips: [
-                  'Read the text carefully',
-                  'Make notes of key points',
-                  'Check your answers before submitting'
-                ]
-              },
-              {
-                name: 'Part 3',
-                description: 'Academic texts with detailed analysis',
-                duration: 20,
-                questions: 14,
-                skills: ['Critical analysis', 'Synthesis', 'Evaluation'],
-                format: 'Matching and summary completion questions',
-                tips: [
-                  'Understand the text structure',
-                  'Identify key arguments',
-                  'Pay attention to detail'
-                ]
-              }
-            ],
-            totalDuration: 60,
-            totalQuestions: 40,
-            passingScore: 6.0,
-            difficulty: 'intermediate',
-            preparationTime: '3-4 months',
-            recommendedResources: [
-              'Cambridge IELTS practice materials',
-              'British Council resources',
-              'Online reading comprehension exercises'
-            ]
-          }
+          ...descriptions.reading,
+          supportedModals: this.getSupportedModalsForModule(IELTS_MODULES.READING)
         }
       },
       [IELTS_MODULES.WRITING]: {
         id: IELTS_MODULES.WRITING,
         label: 'Writing',
         details: {
-          description: 'Test your ability to write in English',
-          skills: [
-            {
-              name: 'Task achievement',
-              description: 'Completing the task requirements',
-              examples: ['Following the task instructions', 'Meeting the word count', 'Using appropriate language']
-            },
-            {
-              name: 'Task response',
-              description: 'Responding to the task',
-              examples: ['Using appropriate language', 'Following the task instructions', 'Meeting the word count']
-            }
-          ],
-          textTypes: [
-            {
-              name: 'Academic texts',
-              description: 'Texts from academic journals, textbooks, and research papers',
-              examples: ['Research articles', 'Academic papers', 'Textbook extracts']
-            },
-            {
-              name: 'Diagrams',
-              description: 'Visual representations of information',
-              examples: ['Flow charts', 'Process diagrams', 'Technical drawings']
-            },
-            {
-              name: 'Charts',
-              description: 'Data visualization and statistical information',
-              examples: ['Bar charts', 'Line graphs', 'Pie charts']
-            }
-          ],
-          questionTypes: [
-            {
-              name: 'Multiple choice',
-              description: 'Select the correct answer from given options',
-              examples: ['Single correct answer', 'Multiple correct answers', 'Best answer selection']
-            },
-            {
-              name: 'True/False/Not Given',
-              description: 'Determine if statements are true, false, or not mentioned in the text',
-              examples: ['Factual statements', 'Inference questions', 'Opinion statements']
-            },
-            {
-              name: 'Matching',
-              description: 'Match items from two columns based on the text',
-              examples: ['Headings with paragraphs', 'Questions with answers', 'Statements with speakers']
-            }
-          ],
-          examStructure: {
-            description: 'The IELTS writing exam tests your ability to write in English',
-            parts: [
-              {
-                name: 'Part 1',
-                description: 'Task 1: Letter/Email',
-                duration: 60,
-                questions: 1,
-                skills: ['Task achievement', 'Task response'],
-                format: 'Letter/Email',
-                tips: [
-                  'Follow the task instructions',
-                  'Use appropriate language',
-                  'Meet the word count'
-                ]
-              },
-              {
-                name: 'Part 2',
-                description: 'Task 2: Essay',
-                duration: 60,
-                questions: 1,
-                skills: ['Task achievement', 'Task response'],
-                format: 'Essay',
-                tips: [
-                  'Follow the task instructions',
-                  'Use appropriate language',
-                  'Meet the word count'
-                ]
-              }
-            ],
-            totalDuration: 120,
-            totalQuestions: 2,
-            passingScore: 6.0,
-            difficulty: 'intermediate',
-            preparationTime: '3-4 months',
-            recommendedResources: [
-              'Cambridge IELTS practice materials',
-              'British Council resources',
-              'Online writing practice exercises'
-            ]
-          }
+          ...descriptions.writing,
+          supportedModals: this.getSupportedModalsForModule(IELTS_MODULES.WRITING)
         }
       },
       [IELTS_MODULES.LISTENING]: {
         id: IELTS_MODULES.LISTENING,
         label: 'Listening',
         details: {
-          description: 'Test your ability to understand spoken English',
-          skills: [
-            {
-              name: 'Listening comprehension',
-              description: 'Understanding main ideas and specific details in spoken English',
-              examples: ['Identifying key information', 'Understanding context', 'Following instructions']
-            },
-            {
-              name: 'Text analysis',
-              description: 'Analyzing text structure and language features',
-              examples: ['Recognizing text types', 'Understanding text organization', 'Identifying language patterns']
-            }
-          ],
-          textTypes: [
-            {
-              name: 'Academic texts',
-              description: 'Texts from academic journals, textbooks, and research papers',
-              examples: ['Research articles', 'Academic papers', 'Textbook extracts']
-            },
-            {
-              name: 'Diagrams',
-              description: 'Visual representations of information',
-              examples: ['Flow charts', 'Process diagrams', 'Technical drawings']
-            },
-            {
-              name: 'Charts',
-              description: 'Data visualization and statistical information',
-              examples: ['Bar charts', 'Line graphs', 'Pie charts']
-            }
-          ],
-          questionTypes: [
-            {
-              name: 'Multiple choice',
-              description: 'Select the correct answer from given options',
-              examples: ['Single correct answer', 'Multiple correct answers', 'Best answer selection']
-            },
-            {
-              name: 'True/False/Not Given',
-              description: 'Determine if statements are true, false, or not mentioned in the text',
-              examples: ['Factual statements', 'Inference questions', 'Opinion statements']
-            },
-            {
-              name: 'Matching',
-              description: 'Match items from two columns based on the text',
-              examples: ['Headings with paragraphs', 'Questions with answers', 'Statements with speakers']
-            }
-          ],
-          examStructure: {
-            description: 'The IELTS listening exam tests your ability to understand spoken English',
-            parts: [
-              {
-                name: 'Part 1',
-                description: 'Short conversations',
-                duration: 4,
-                questions: 4,
-                skills: ['Basic comprehension', 'Vocabulary recognition', 'Simple analysis'],
-                format: 'Multiple choice questions',
-                tips: [
-                  'Listen carefully',
-                  'Look for key words',
-                  'Manage your time well'
-                ]
-              },
-              {
-                name: 'Part 2',
-                description: 'Longer conversations',
-                duration: 6,
-                questions: 4,
-                skills: ['Detailed comprehension', 'Analysis', 'Evaluation'],
-                format: 'Multiple choice questions',
-                tips: [
-                  'Listen carefully',
-                  'Take notes',
-                  'Review your answers'
-                ]
-              },
-              {
-                name: 'Part 3',
-                description: 'Academic lectures',
-                duration: 10,
-                questions: 4,
-                skills: ['Critical analysis', 'Synthesis', 'Evaluation'],
-                format: 'Multiple choice questions',
-                tips: [
-                  'Listen carefully',
-                  'Take notes',
-                  'Review your answers'
-                ]
-              },
-              {
-                name: 'Part 4',
-                description: 'Academic lectures',
-                duration: 10,
-                questions: 4,
-                skills: ['Critical analysis', 'Synthesis', 'Evaluation'],
-                format: 'Multiple choice questions',
-                tips: [
-                  'Listen carefully',
-                  'Take notes',
-                  'Review your answers'
-                ]
-              }
-            ],
-            totalDuration: 30,
-            totalQuestions: 16,
-            passingScore: 6.0,
-            difficulty: 'intermediate',
-            preparationTime: '3-4 months',
-            recommendedResources: [
-              'Cambridge IELTS practice materials',
-              'British Council resources',
-              'Online listening practice exercises'
-            ]
-          }
+          ...descriptions.listening,
+          supportedModals: this.getSupportedModalsForModule(IELTS_MODULES.LISTENING)
         }
       },
       [IELTS_MODULES.SPEAKING]: {
         id: IELTS_MODULES.SPEAKING,
         label: 'Speaking',
         details: {
-          description: 'Test your ability to speak in English',
-          skills: [
-            {
-              name: 'Fluency',
-              description: 'Speaking without many breaks and using appropriate language',
-              examples: ['Speaking without many breaks', 'Using appropriate language', 'Maintaining a conversation']
-            },
-            {
-              name: 'Lexical resource',
-              description: 'Using a wide range of words and phrases',
-              examples: ['Using a wide range of words', 'Using appropriate language', 'Expanding vocabulary']
-            },
-            {
-              name: 'Grammatical range and accuracy',
-              description: 'Using a range of grammatical structures and forming correct sentences',
-              examples: ['Using a range of grammatical structures', 'Forming correct sentences', 'Using appropriate tenses']
-            }
-          ],
-          textTypes: [
-            {
-              name: 'Academic texts',
-              description: 'Texts from academic journals, textbooks, and research papers',
-              examples: ['Research articles', 'Academic papers', 'Textbook extracts']
-            },
-            {
-              name: 'Diagrams',
-              description: 'Visual representations of information',
-              examples: ['Flow charts', 'Process diagrams', 'Technical drawings']
-            },
-            {
-              name: 'Charts',
-              description: 'Data visualization and statistical information',
-              examples: ['Bar charts', 'Line graphs', 'Pie charts']
-            }
-          ],
-          questionTypes: [
-            {
-              name: 'Multiple choice',
-              description: 'Select the correct answer from given options',
-              examples: ['Single correct answer', 'Multiple correct answers', 'Best answer selection']
-            },
-            {
-              name: 'True/False/Not Given',
-              description: 'Determine if statements are true, false, or not mentioned in the text',
-              examples: ['Factual statements', 'Inference questions', 'Opinion statements']
-            },
-            {
-              name: 'Matching',
-              description: 'Match items from two columns based on the text',
-              examples: ['Headings with paragraphs', 'Questions with answers', 'Statements with speakers']
-            }
-          ],
-          examStructure: {
-            description: 'The IELTS speaking exam tests your ability to speak in English',
-            parts: [
-              {
-                name: 'Part 1',
-                description: 'Introduction and interview',
-                duration: 4,
-                questions: 1,
-                skills: ['Basic comprehension', 'Vocabulary recognition', 'Simple analysis'],
-                format: 'Interview',
-                tips: [
-                  'Introduce yourself',
-                  'Answer the question',
-                  'Maintain a conversation'
-                ]
-              },
-              {
-                name: 'Part 2',
-                description: 'Cue card task',
-                duration: 3,
-                questions: 1,
-                skills: ['Detailed comprehension', 'Analysis', 'Evaluation'],
-                format: 'Cue card',
-                tips: [
-                  'Answer the question',
-                  'Use appropriate language',
-                  'Maintain a conversation'
-                ]
-              },
-              {
-                name: 'Part 3',
-                description: 'Two-way discussion',
-                duration: 4,
-                questions: 1,
-                skills: ['Detailed comprehension', 'Analysis', 'Evaluation'],
-                format: 'Two-way discussion',
-                tips: [
-                  'Answer the question',
-                  'Use appropriate language',
-                  'Maintain a conversation'
-                ]
-              },
-              {
-                name: 'Part 4',
-                description: 'Cue card task',
-                duration: 3,
-                questions: 1,
-                skills: ['Detailed comprehension', 'Analysis', 'Evaluation'],
-                format: 'Cue card',
-                tips: [
-                  'Answer the question',
-                  'Use appropriate language',
-                  'Maintain a conversation'
-                ]
-              },
-              {
-                name: 'Part 5',
-                description: 'Two-way discussion',
-                duration: 5,
-                questions: 1,
-                skills: ['Detailed comprehension', 'Analysis', 'Evaluation'],
-                format: 'Two-way discussion',
-                tips: [
-                  'Answer the question',
-                  'Use appropriate language',
-                  'Maintain a conversation'
-                ]
-              }
-            ],
-            totalDuration: 14,
-            totalQuestions: 5,
-            passingScore: 6.0,
-            difficulty: 'intermediate',
-            preparationTime: '3-4 months',
-            recommendedResources: [
-              'Cambridge IELTS practice materials',
-              'British Council resources',
-              'Online speaking practice exercises'
-            ]
-          }
+          ...descriptions.speaking,
+          supportedModals: this.getSupportedModalsForModule(IELTS_MODULES.SPEAKING)
         }
       }
     };
@@ -619,6 +199,7 @@ export class IeltsExamModule extends BaseExamModule {
           examples: ['Headings with paragraphs', 'Questions with answers', 'Statements with speakers']
         }
       ],
+      supportedModals: this.getSupportedModalsForModule(moduleId),
       examStructure: {
         description: `The Band ${band} exam structure is designed to test your ${moduleId} skills comprehensively.`,
         parts: [
@@ -633,7 +214,8 @@ export class IeltsExamModule extends BaseExamModule {
               'Read questions first',
               'Look for key words',
               'Manage your time well'
-            ]
+            ],
+            supportedModals: this.getSupportedModalsForPart(moduleId, 'part1')
           },
           {
             name: 'Part 2',
@@ -646,7 +228,8 @@ export class IeltsExamModule extends BaseExamModule {
               'Read carefully',
               'Take notes',
               'Review your answers'
-            ]
+            ],
+            supportedModals: this.getSupportedModalsForPart(moduleId, 'part2')
           },
           {
             name: 'Part 3',
@@ -659,7 +242,8 @@ export class IeltsExamModule extends BaseExamModule {
               'Understand the text structure',
               'Identify key arguments',
               'Pay attention to detail'
-            ]
+            ],
+            supportedModals: this.getSupportedModalsForPart(moduleId, 'part3')
           }
         ],
         totalDuration: 60,
@@ -679,13 +263,8 @@ export class IeltsExamModule extends BaseExamModule {
   }
 
   // Helper method to determine difficulty level based on band
-  private getDifficultyLevel(band: number): 'beginner' | 'elementary' | 'intermediate' | 'upper-intermediate' | 'advanced' | 'proficiency' {
-    if (band <= 3) return 'beginner';
-    if (band <= 4) return 'elementary';
-    if (band <= 5) return 'intermediate';
-    if (band <= 6) return 'upper-intermediate';
-    if (band <= 7) return 'advanced';
-    return 'proficiency';
+  private getDifficultyLevel(band: number): '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' {
+    return band.toString() as '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
   }
 
   // Helper method to determine preparation time based on band
@@ -696,6 +275,123 @@ export class IeltsExamModule extends BaseExamModule {
     if (band <= 6) return '4-5 months';
     if (band <= 7) return '5-6 months';
     return '6+ months';
+  }
+
+  // Helper method to get supported modals for a module
+  private getSupportedModalsForModule(moduleId: IeltsModuleType): Array<{
+    type: 'multiple-choice' | 'fill-gap' | 'matching' | 'true-false' | 'short-answer';
+    description: string;
+    config?: Record<string, any>;
+  }> {
+    switch (moduleId) {
+      case IELTS_MODULES.READING:
+        return [
+          {
+            type: 'multiple-choice',
+            description: 'Select the correct answer from given options',
+            config: {
+              maxOptions: 4,
+              allowMultipleCorrect: false
+            }
+          },
+          {
+            type: 'matching',
+            description: 'Match headings with paragraphs or information',
+            config: {
+              maxPairs: 8
+            }
+          },
+          {
+            type: 'true-false',
+            description: 'Determine if statements are true, false, or not given',
+            config: {
+              includeNotGiven: true
+            }
+          }
+        ];
+      case IELTS_MODULES.WRITING:
+        return [
+          {
+            type: 'fill-gap',
+            description: 'Complete summary with appropriate words',
+            config: {
+              allowSynonyms: true,
+              caseSensitive: false,
+              wordLimit: true
+            }
+          },
+          {
+            type: 'short-answer',
+            description: 'Write essays and reports',
+            config: {
+              minWords: 150,
+              maxWords: 300,
+              taskTypes: ['essay', 'report', 'letter']
+            }
+          }
+        ];
+      case IELTS_MODULES.LISTENING:
+        return [
+          {
+            type: 'multiple-choice',
+            description: 'Select the correct answer based on the audio',
+            config: {
+              maxOptions: 3,
+              allowMultipleCorrect: false
+            }
+          },
+          {
+            type: 'fill-gap',
+            description: 'Complete notes, summary, or form',
+            config: {
+              allowSynonyms: true,
+              caseSensitive: false,
+              wordLimit: true
+            }
+          }
+        ];
+      case IELTS_MODULES.SPEAKING:
+        return [
+          {
+            type: 'short-answer',
+            description: 'Respond to interview questions and tasks',
+            config: {
+              preparationTime: 60,
+              responseTime: 120,
+              taskTypes: ['interview', 'monologue', 'discussion']
+            }
+          }
+        ];
+      default:
+        return [];
+    }
+  }
+
+  // Helper method to get supported modals for a specific part
+  private getSupportedModalsForPart(moduleId: IeltsModuleType, part: string): Array<'multiple-choice' | 'fill-gap' | 'matching' | 'true-false' | 'short-answer'> {
+    switch (moduleId) {
+      case IELTS_MODULES.READING:
+        switch (part) {
+          case 'part1':
+            return ['multiple-choice', 'matching'];
+          case 'part2':
+            return ['true-false', 'multiple-choice'];
+          case 'part3':
+            return ['matching', 'fill-gap'];
+          default:
+            return ['multiple-choice'];
+        }
+      case IELTS_MODULES.WRITING:
+        return part === 'part1' 
+          ? ['short-answer'] // Task 1: Report/Letter
+          : ['short-answer']; // Task 2: Essay
+      case IELTS_MODULES.LISTENING:
+        return ['multiple-choice', 'fill-gap'];
+      case IELTS_MODULES.SPEAKING:
+        return ['short-answer'];
+      default:
+        return [];
+    }
   }
 
   // Required interface implementations

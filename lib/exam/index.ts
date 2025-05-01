@@ -6,6 +6,10 @@
 // Export module base types and registry
 export * from './modules/base';
 
+// Export session management system
+export * from './session';
+export * from './hooks/useExamSession';
+
 // Import all modules to ensure they're registered
 import './modules/goethe';
 import './modules/ielts';

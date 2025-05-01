@@ -21,6 +21,11 @@ export interface ExamModuleDetails {
     description: string;
     examples: string[];
   }>;
+  supportedModals: Array<{
+    type: 'multiple-choice' | 'fill-gap' | 'matching' | 'true-false' | 'short-answer';
+    description: string;
+    config?: Record<string, any>;
+  }>;
   examStructure: {
     description: string;
     parts: Array<{
@@ -31,11 +36,12 @@ export interface ExamModuleDetails {
       skills: string[];
       format: string;
       tips: string[];
+      supportedModals?: Array<'multiple-choice' | 'fill-gap' | 'matching' | 'true-false' | 'short-answer'>;
     }>;
     totalDuration: number;
     totalQuestions: number;
     passingScore: number;
-    difficulty: 'beginner' | 'elementary' | 'intermediate' | 'upper-intermediate' | 'advanced' | 'proficiency';
+    difficulty: 'a1' | 'a2' | 'b1' | 'b2' | 'c1' | 'c2' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
     preparationTime: string;
     recommendedResources: string[];
   };

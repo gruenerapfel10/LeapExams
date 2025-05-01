@@ -59,6 +59,7 @@ export function ConfigLayout({
           <ExamSummary 
             moduleConfig={moduleConfig}
             levelConfig={levelConfig}
+            examType={examTypeConfig.id}
             onStart={onStart}
           />
         </div>

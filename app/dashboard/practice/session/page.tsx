@@ -7,8 +7,10 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import { useSearchParams, useRouter } from "next/navigation"
 import { useExamState } from "../hooks/use-exam-state"
 import { Brain, BookText, Headphones, MicVocal } from "lucide-react"
+import { SessionController } from "../components/session/session-controller"
 
-type IconType = "bookOpen" | "fileQuestion" | "bot" | "percent" | "hash"
+// This should match the icons available in TabSystem component
+type IconType = "bookOpen" | "fileQuestion" | "bot" | "percent" | "hash";
 
 export default function SessionPage() {
   const examState = useExamState();
@@ -180,6 +182,13 @@ export default function SessionPage() {
             </div>
           </div>
         )
+      case 'session-debug':
+        return (
+          <div className="h-full p-4 overflow-auto">
+            <h2 className="text-xl font-bold mb-4">Session Debug</h2>
+            <SessionController />
+          </div>
+        )
       default:
         return null
     }
@@ -200,6 +209,11 @@ export default function SessionPage() {
             title: examState.moduleConfig?.label || 'Content', 
             iconType: getIconForModule(examState.moduleConfig?.id || '') 
           },
+          {
+            id: 'session-debug',
+            title: 'Session Debug',
+            iconType: 'hash'
+          }
         ],
         activeTabId: 'content',
         isCollapsed: false,

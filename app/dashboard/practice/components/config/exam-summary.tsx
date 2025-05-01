@@ -5,21 +5,40 @@ import { Separator } from "@/components/ui/separator";
 import { Clock, BookOpen, Target, FileQuestion, Brain } from "lucide-react";
 import { useMediaQuery } from "@/app/hooks/use-media-query";
 import { ModuleConfig, LevelConfig } from "@/lib/exam";
+import { useExamSession } from "@/lib/exam/hooks/useExamSession";
+import { useCallback } from "react";
 
 interface ExamSummaryProps {
   moduleConfig: ModuleConfig;
   levelConfig: LevelConfig;
+  examType: string;
   onStart: () => void;
 }
 
 export function ExamSummary({ 
   moduleConfig, 
   levelConfig, 
+  examType,
   onStart 
 }: ExamSummaryProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const { startSession } = useExamSession();
+  
   if (!moduleConfig || !levelConfig) return null;
   const { details } = levelConfig;
+
+  // Handle starting the exercise
+  const handleStartExercise = useCallback(() => {
+    // Start a new session with the current configs
+    startSession({
+      examType,
+      moduleId: moduleConfig.id,
+      levelId: levelConfig.id
+    });
+    
+    // Call the parent's onStart handler
+    onStart();
+  }, [examType, moduleConfig.id, levelConfig.id, onStart, startSession]);
 
   return (
     <Card className="h-full flex flex-col bg-muted/50">
@@ -85,7 +104,7 @@ export function ExamSummary({
 
         <div className="flex-1" />
 
-        <Button className="w-full" size="lg" onClick={onStart}>
+        <Button className="w-full" size="lg" onClick={handleStartExercise}>
           Start Exercise
         </Button>
 
